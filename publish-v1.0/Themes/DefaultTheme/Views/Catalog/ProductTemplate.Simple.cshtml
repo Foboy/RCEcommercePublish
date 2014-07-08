@@ -19,20 +19,6 @@
         Html.AddCanonicalUrlParts(productUrl);
     }
 }
-@helper ScoreToStar(int score)
-{
-    string css = "icon-stat-";
-    int star = score / 20;
-    if (star > 0)
-    {
-        css += star.ToString();
-    }
-    if (star * 20 + 10 < score)
-    {
-        css += "half";
-    }
-    <text>@Html.Raw(css)</text>
-}
 <!--product breadcrumb-->
 @Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
 <div class="goods-detail-info row clearfix">
@@ -61,7 +47,7 @@
         }*@
         <dl class="product-info">
             <dt>商品评分：</dt>
-            <dd><a title="@(Model.Score)分"><i class="icon-stat @ScoreToStar(Model.Score) "></i></a></dd>
+            <dd><a title="@(Model.Score)分"><i class="icon-stat @Html.ScoreToStar(Model.Score) "></i></a></dd>
         </dl>
         @Html.Widget("productdetails_overview_top")
         <!--product SKU, manufacturer part number, stock info-->

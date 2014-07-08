@@ -81,7 +81,7 @@
             </a>
         }
         
-        <a href="javascript:void(0);" class="btn-brown once-pay" data-productid="@Model.ProductId" >
+        <a href="javascript:void(0);" class="btn-brown once-pay" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form','@Model.CheckoutUrl');return false;">
             立即购买
         </a>
 

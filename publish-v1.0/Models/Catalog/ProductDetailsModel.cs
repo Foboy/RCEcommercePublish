@@ -120,6 +120,8 @@ namespace Nop.Web.Models.Catalog
             public int UpdatedShoppingCartItemId { get; set; }
 
             public int StockQuantity { get; set; }
+
+            public string CheckoutUrl { get; set; }
         }
 
         public partial class ProductPriceModel : BaseNopModel

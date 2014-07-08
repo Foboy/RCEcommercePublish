@@ -41,18 +41,20 @@ var AjaxCart = {
     },
 
     //add a product to the cart/wishlist from the product details page (desktop version)
-    addproducttocart_details: function (urladd, formselector) {
+    addproducttocart_details: function (urladd, formselector, checkoutUrl) {
         if (this.loadWaiting != false) {
             return;
         }
+        var me = this;
         this.setLoadWaiting(true);
-
         $.ajax({
             cache: false,
             url: urladd,
             data: $(formselector).serialize(),
             type: 'post',
-            success: this.success_desktop,
+            success: function (response) {
+                me.success_desktop(response, checkoutUrl);
+            },
             complete: this.resetLoadWaiting,
             error: this.ajaxFailure
         });
@@ -101,7 +103,7 @@ var AjaxCart = {
         });
     },
 
-    success_desktop: function (response) {
+    success_desktop: function (response, checkoutUrl) {
         console.log(response)
         if (response.updatetopcartsectionhtml) {
             $(AjaxCart.topcartselector).html(response.updatetopcartsectionhtml);
@@ -116,6 +118,12 @@ var AjaxCart = {
         if (response.message) {
             //display notification
             if (response.success == true) {
+
+                if (typeof checkoutUrl != "undefined")
+                {
+                    location.href = checkoutUrl;
+                    return true;
+                }
                 //success
                 if (AjaxCart.usepopupnotifications == true) {
                     displayPopupNotification(response.message, 'success', true);

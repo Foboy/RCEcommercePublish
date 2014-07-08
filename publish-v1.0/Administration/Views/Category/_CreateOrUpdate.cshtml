@@ -112,7 +112,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#@Html.FieldIdFor(model => model.AllowCustomersToSelectPageSize)").click(togglePageSize);
-            togglePageSize();
+            //togglePageSize();
         });
 
         function togglePageSize() {
@@ -128,8 +128,8 @@
 
 
     <table class="adminContent">
-        <tr>
-            <td class="adminTitle">
+        <tr >
+            <td class="adminTitle" >
                 @Html.NopLabelFor(model => model.Name):
             </td>
             <td class="adminData">
@@ -219,7 +219,8 @@
                 @Html.ValidationMessageFor(model => model.AllowCustomersToSelectPageSize)
             </td>
         </tr>
-        <tr id="pnlPageSize">
+        <!--zheng-->
+        <tr id="pnlPageSize" style="display:none">
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.PageSize):
             </td>
@@ -228,7 +229,8 @@
                 @Html.ValidationMessageFor(model => model.PageSize)
             </td>
         </tr>
-        <tr id="pnlPageSizeOptions">
+        <!--zheng-->
+        <tr id="pnlPageSizeOptions" style="display:none">
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.PageSizeOptions):
             </td>
