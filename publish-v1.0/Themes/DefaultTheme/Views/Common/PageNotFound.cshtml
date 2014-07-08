@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+
+    //title
+    Html.AddTitleParts(T("PageTitle.PageNotFound").Text);
+}
+<!doctype html>
+<html lang="zh-CN" xml:lang="zh-CN">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta charset="UTF-8" />
+    <title>404——瑞翠华光官网</title>
+    <style type="text/css">
+        body {
+            background: none repeat scroll 0 0 #dad6cc;
+        }
+
+        body {
+            font-family: 'Capriola',sans-serif;
+        }
+
+        .warp {
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        h1 {
+            color: #ff7a00;
+            font-size: 200px;
+            margin-bottom: 1px;
+            text-align: center;
+            text-shadow: 4px 4px 1px white;
+        }
+
+        p {
+            color: #b1a18d;
+            font-size: 20px;
+            margin-top: 1px;
+            text-align: center;
+        }
+
+        .sub a {
+            color: #ff7a00;
+            font-family: arial,serif;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="warp">
+        <h1>404</h1>
+        <p>你所浏览的页面已不存在</p>
+        <div class="sub">
+            <p>
+                <a href="@Url.RouteUrl("HomePage")">返回首页</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

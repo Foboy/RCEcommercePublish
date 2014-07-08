@@ -1,0 +1,20 @@
+﻿@model ProductQuestionModel
+@{  
+    //page title
+    ViewBag.Title = "常见问题";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+           常见问题 <a class="btn btn-sm btn-primary btn-flat " href="@Url.Action("List", "ProductReview")">返回列表</a>
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="btn btn-sm btn-primary btn-flat " value="@T("Admin.Common.Save")" />
+            <span id="productreview-delete" class="btn btn-sm btn-primary btn-flat ">@T("Admin.Common.Delete")</span>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+@Html.DeleteConfirmation("productreview-delete")

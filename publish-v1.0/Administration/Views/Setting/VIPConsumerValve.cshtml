@@ -1,0 +1,31 @@
+﻿@model VIPConsumerValveSettingsModel
+@{
+    //page title
+   
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+           VIP消费阀值设置
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="btn btn-sm btn-primary btn-flat " value="@T("Admin.Common.Save")" />
+        </div>
+    </div>
+    @Html.Action("StoreScopeConfiguration", "Setting")
+    @Html.ValidationSummary(false)
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.VIPConditionValue_OverrideForStore, model => model.VIPConditionValue, Model.ActiveStoreScopeConfiguration)
+                VIP会员消费阀值:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.VIPConditionValue) 元
+                @Html.ValidationMessageFor(model => model.VIPConditionValue)
+            </td>
+        </tr>
+    </table>
+}

@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+@{
+    //Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/goods-list.css");
+}
+<div class="xm-line-box filter-box">
+    @RenderSection("CategorySelector")
+</div>
+<div class="row">
+    <div class="col col17">
+        <div class="xm-line-box goods-list-box">
+            <div class="goods-list-section ">
+                @Html.Widget("main_column_before")
+                @RenderBody()
+                @Html.Widget("main_column_after")
+            </div>
+        </div>
+    </div>
+
+    <div class="col col4">
+        <div class="goods-detail-desc">
+            <div class="left-list-w xm-box goods-alsobuy xm-goods-side-list">
+                @Html.Action("HomepageProducts", "Catalog")
+            </div>
+            <div class="xm-box goods-alsobuy xm-goods-side-list">
+                @if (IsSectionDefined("left"))
+                {
+                    @RenderSection("left")
+                }
+                else
+                {
+                    @Html.Widget("left_side_column_before")
+                    @Html.Widget("left_side_column_after_category_navigation")
+                    @Html.Action("NewsletterBox", "Newsletter")
+                    @Html.Widget("left_side_column_after")
+                }
+            </div>
+            @Html.Widget("product_list_right")
+        </div>
+    </div>
+</div>

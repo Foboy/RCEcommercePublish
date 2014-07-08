@@ -1,0 +1,21 @@
+﻿/*每日新品*/
+.product-date {
+    height:30px;
+    line-height:30px;
+    text-align:center;
+    margin-top:20px;
+    border-bottom:1px solid #f68b1f;
+}
+.product-time{
+    margin:0 auto;
+    padding:0;
+    color:#f68b1f;
+    font-weight:normal;
+    font-size:18px;
+}
+.icon-left{
+    padding-left:5px;
+}
+.product-width {
+    width:250px !important;
+}

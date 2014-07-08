@@ -1,0 +1,47 @@
+﻿@model ProductReviewOverviewModel
+@using System.Globalization
+@using Nop.Web.Models.Catalog;
+@{
+    int ratingPercent = 0;
+    if (Model.TotalReviews != 0)
+    {
+        ratingPercent = ((Model.RatingSum * 100) / Model.TotalReviews) / 5;
+    }
+}
+@if (Model.AllowCustomerReviews)
+{
+    <div class="product-reviews-overview" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        <div class="product-review-box">
+            <div class="rating">
+                <div style="width: @(ratingPercent)%">
+                </div>
+            </div>
+        </div>
+
+        @if (Model.TotalReviews > 0)
+        {
+            <dl class="product-info clearfix">
+                <dt>评论：</dt>
+                <dd>
+                    <a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId })" class="product-info-content">
+                        <b class="basecolor">@Model.TotalReviews</b>
+                    </a>
+                </dd>
+                @*<span class="separator">|</span>
+                    <a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId }) class=" font12"">添加评论</a>*@
+            </dl>
+                            @*hidden microdata info*@
+            decimal ratingValue = ratingPercent / (decimal)20;
+                <span itemprop="ratingValue" style="display: none;">@ratingValue.ToString("0.0", new CultureInfo("en-US"))</span>
+                <span itemprop="reviewCount" style="display: none;">@Model.TotalReviews</span>
+        }
+        else
+        {
+            <dl class="product-info clearfix">
+                <dd>
+                    <a href="@Url.RouteUrl("ProductReviews", new { productId = Model.ProductId })">@T("Reviews.Overview.First")</a>
+                </dd>
+            </dl>
+        }
+    </div>
+}

@@ -1,0 +1,97 @@
+﻿@model ProductDetailsModel.AddToCartModel
+@using Nop.Web.Models.Catalog;
+@using Nop.Core.Domain.Orders;
+<div class="add-to-cart">
+    @if (Model.UpdatedShoppingCartItemId > 0)
+    {
+        @Html.HiddenFor(x => x.UpdatedShoppingCartItemId)
+    }
+    @if (Model.CustomerEntersPrice)
+    {
+        <div class="customer-entered-price">
+            <div class="price-input">
+                @Html.LabelFor(model => model.CustomerEnteredPrice, new { @class = "enter-price-label" }, ":")
+                @*round price*@
+                @Html.TextBox("CustomerEnteredPrice", Convert.ToInt32(Math.Ceiling(Model.CustomerEnteredPrice)), new { @class = "enter-price-input" })
+            </div>
+            <div class="price-range">
+                @Model.CustomerEnteredPriceRange
+            </div>
+        </div>
+    }
+    @if (!Model.DisableBuyButton || !Model.DisableWishlistButton)
+{
+    <dl class="add-to-cart-panel product-info">
+        <dt>&nbsp;&nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.EnteredQuantity, new { @class = "" }, "：")</dt>
+        @if (Model.AllowedQuantities.Count > 0)
+        {
+            @Html.DropDownListFor(model => model.EnteredQuantity, Model.AllowedQuantities, new { @class = "qty-dropdown" })
+        }
+        else
+        {
+            <dd>
+                <a href="javascript:void(0);" id="num_minus"><i class="iconfont addnum-btn product-info-content">&#xf0176;</i></a>
+                @Html.TextBoxFor(model => model.EnteredQuantity, new { @class = "addnum-input" })
+                <a href="javascript:void(0);" id="num_plus"><i class="iconfont addnum-btn">&#xf0175;</i></a>
+            </dd>
+            <dd class="font12">(库存：@Model.StockQuantity)</dd>
+            //when a customer clicks 'Enter' button we submit the "add to cart" button (if visible)
+            if (!Model.DisableBuyButton)
+            {
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#@Html.FieldIdFor(model => model.EnteredQuantity)").keydown(function (event) {
+                            if (event.keyCode == 13) {
+                                $("#add-to-cart-button-@Model.ProductId").click();
+                                return false;
+                            }
+                        });
+                    });
+                    $("#num_plus").click(function () {
+                        var num = parseInt($(".addnum-input").val());
+                        if (!isNaN(num)) {
+                            $(".addnum-input").val(num + 1);
+                        }
+                    });
+                    $("#num_minus").click(function () {
+                        var num = parseInt($(".addnum-input").val());
+                        if (!isNaN(num) && num > 1) {
+                            $(".addnum-input").val(num - 1);
+                        }
+                    });
+                </script>
+            }
+        }
+
+    </dl>
+    <div class="add-product">
+        @if (!Model.DisableBuyButton)
+        {
+            var addToCartText = "";
+            if (Model.UpdatedShoppingCartItemId > 0)
+            {
+                addToCartText = T("ShoppingCart.AddToCart.Update").Text;
+            }
+            else
+            {
+                addToCartText = Model.AvailableForPreOrder ? T("ShoppingCart.PreOrder").Text : T("ShoppingCart.AddToCart").Text;
+            }
+            <a id="add-to-cart-button-@Model.ProductId" href="javascript:void(0);" class="btn-primary add-cart" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;" >
+                <i class="iconfont icon-margin">&#xf0175;</i>加入购物车
+            </a>
+        }
+        
+        <a href="javascript:void(0);" class="btn-brown once-pay" data-productid="@Model.ProductId" >
+            立即购买
+        </a>
+
+        @if (!Model.DisableWishlistButton && Model.UpdatedShoppingCartItemId == 0)
+        {
+            <a id="add-to-wishlist-button-@Model.ProductId" href="javascript:void(0);" class="btn-yellow wishbtn" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_catalog('@Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.Wishlist, quantity = 1 })');return false;">
+                <i class="iconfont icon-margin">&#xf0144;</i>收藏
+            </a>
+        }
+    </div>
+    }
+    @Html.Widget("productdetails_add_info")
+</div>

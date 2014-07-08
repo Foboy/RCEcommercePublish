@@ -1,0 +1,54 @@
+﻿@model CustomerAvatarModel
+@using Nop.Web.Models.Customer;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+}
+@section left
+{
+    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+}
+@using (Html.BeginRouteForm("CustomerAvatar", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="xm-line-box uc-box">
+        <div class="box-hd">
+            <h3 class="title">@T("Account.MyAccount") - @T("Account.Avatar")</h3>
+        </div>
+        <div class="box-bd">
+            <div class="compensate-content">
+             
+
+                <div class="userhader-img">
+                    <div class="tx-div">
+                        <img src="~/Themes/DefaultTheme/Content/Images/tx.png" />
+                    </div>
+                </div>
+
+                <div class="upload-div">
+                    @if (!String.IsNullOrEmpty(Model.AvatarUrl))
+                    {
+                        <div class="image">
+                            <img src="@(Model.AvatarUrl)" alt="avatar" />
+                        </div>
+                    }
+                    <input name="uploadedFile" type="file" />
+                </div>
+                <div class="upload-btn">
+                    <input type="submit" name="upload-avatar" class="btn btn-primary btn-small" value="@T("Common.Upload")" />
+                    @if (!String.IsNullOrEmpty(Model.AvatarUrl))
+                    {
+                        <input type="submit" name="remove-avatar" class="btn btn-primary btn-small" value="@T("Account.Avatar.RemoveAvatar")" />
+                    }
+                </div>
+                <div class="info font12 address-table-text">
+                    温馨提示：@T("Account.Avatar.UploadRules")
+                </div>
+                <div class="font12 address-table-text rcolor">
+                    @Html.ValidationSummary(true)
+                </div>
+            </div>
+        </div>
+    </div>
+}

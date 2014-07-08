@@ -1,0 +1,74 @@
+﻿@model ProductOverviewModel
+@using Nop.Core
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Catalog;
+@{
+    //prepare "Add to cart" AJAX link
+    string addtocartlink = "", addtowishlink="";
+    var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+    var shoppingWishTypeId = (int)ShoppingCartType.Wishlist;
+    var quantity = 1;
+    if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+    {
+        addtowishlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingWishTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+    }
+    else
+    {
+        addtowishlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingWishTypeId, quantity = quantity, });
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+    }    
+}
+@helper ScoreToStar(int score)
+{
+        string css = "icon-stat-";
+        int star = score / 20;
+        if (star > 0)
+        {
+            css += star.ToString();
+        }
+        if (star * 20 + 10 < score)
+        {
+            css += "half";
+        }  
+        <text>@Html.Raw(css)</text>
+}
+<div class="xm-goods-item" style="width:250px;" data-productid="@Model.Id">
+    <div class="item-thumb">
+        <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title" target="_blank">
+            <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" srcset="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+        </a>
+    </div>
+    <div class="item-info">
+        <h3 class="item-title">
+            <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" target="_blank">@Model.Name</a>
+        </h3>
+        <div class="item-price">
+            @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice))
+            {
+                <del class="price old-price">@Model.ProductPrice.OldPrice</del>
+            }
+            <span class="price actual-price">@Model.ProductPrice.Price</span>
+        </div>
+        <div class="item-star">
+            瑞翠推荐：<a title="@(Model.Score)分"><span class="icon-stat @ScoreToStar(Model.Score)"></span></a>
+            <span class="item-comments" style="display:none;">0 人评价</span>
+        </div>
+        <div class="item-actions">
+            @if (!Model.ProductPrice.DisableBuyButton)
+            {
+                <a class="btn btn-small btn-primary J_addCart" href="javascript: void(0);" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;">
+                    <i class="iconfont font12 wcolor">&#xf0148;</i>购物车
+                </a>
+                <a class="btn btn-dake btn-small J_addFav" href="javascript: void(0);" data-productid="@Model.Id"
+                    onclick="AjaxCart.addproducttocart_catalog('@addtowishlink');return false;">
+                    <i class="iconfont font12 wcolor">&#xe60e;</i>收藏
+                </a>
+            }
+        </div>
+        <div class="item-flag">
+        </div>
+    </div>
+</div>

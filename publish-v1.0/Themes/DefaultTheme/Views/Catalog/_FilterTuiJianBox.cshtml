@@ -1,0 +1,29 @@
+﻿@using Nop.Web.Models.Catalog;
+@model CatalogPagingFilteringModel
+
+
+@using (Html.BeginForm("SearchTuiJianProduct", "Catalog"))
+ {
+<b class="float-left tj-search-title ">商品分值：</b>
+<b class="fPb-item float-left">
+    @Html.TextBoxFor(m => m.MinScore, new { @class = "j_FPInput", id = "start_price", name = "start_price", autofocus = "autofocus", autocomplete = "off", maxlength = "6" })
+  
+</b>
+<i class="fPb-split">-</i>
+<b class="fPb-item float-left">
+    @Html.TextBoxFor(m => m.MaxScore, new { @class = "j_FPInput", id = "end_price", name = "end_price", autofocus = "autofocus", autocomplete = "off", maxlength = "6" })
+   
+</b>
+<b class="fPb-item float-left fPrice-btn-margin ">
+
+    <button class="fPrice-btn" type="submit" >确定</button>
+    <button class="fPrice-empty" onclick="cleanPriceFilter();">清空</button>
+</b>
+        <script>
+        function cleanPriceFilter()
+        {
+            $("#start_price").val(0);
+            $("#end_price").val(0);
+        }
+    </script>
+}

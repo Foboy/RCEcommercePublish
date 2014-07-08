@@ -1,0 +1,12 @@
+﻿@model System.DateTime?
+@{
+    Html.AppendScriptParts("~/Scripts/kendo/2014.1.318/cultures/kendo.culture.zh-CHS.min.js");
+}
+<input id="@ViewData.TemplateInfo.GetFullHtmlFieldId(string.Empty)" name="@ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty)" value="@(Model > DateTime.MinValue || Model.HasValue ? Model.Value.ToShortDateString() : null)" />
+<script>
+    $(document).ready(function () {
+        $("#@ViewData.TemplateInfo.GetFullHtmlFieldId(string.Empty)").kendoDatePicker({
+            format: "yyyy-MM-dd" //format is used to format the value of the widget and to parse the input.
+        });
+    });
+</script>

@@ -1,0 +1,187 @@
+﻿@using Nop.Web.Models.Catalog
+@using Nop.Web.Framework.UI
+@model CategoryModel
+@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+    Html.AddTitleParts("VIP专区——瑞翠华光官网");
+    Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/vip.css");
+}
+
+<div class="site-topbar">
+    <div class="container">
+        <div class="topbar-nav">
+            <a class="current" href="@Url.RouteUrl("HomePage")">瑞翠华光</a>
+        </div>
+        <div class="topbar-info J_userInfo">
+            @Html.Action("HeaderLinks", "Common")
+        </div>
+    </div>
+</div>
+<!-- .site-topbar END -->
+
+    <div class="site-header vip-nav-border container">
+        <div class="site-logo">
+            <a class="logo" href="" title="瑞翠华光"></a>
+        </div>
+        <div class="vip-title">
+            <h4>VIP</h4>&nbsp;专区
+        </div>
+        <div class="header-info">
+          
+                @Html.Action("VipTopSpecsMenu", "Catalog")
+             
+            
+        </div>
+    </div>
+    <!-- .site-header END -->
+
+
+    <div class="container">
+        <div class="row vip-margin">
+            <div class="box-hd">
+                <dl class="xm-filter-list xm-filter-list-first category-filter-list clearfix">
+                    <dd class="float-left">
+                        <ul id="typeOrder" class="clearfix">
+@if (Model.PagingFilteringContext.AvailableSortOptions.Count > 0)
+{
+    var first = 0;
+    var firstCss = " first";
+    foreach (var item in Model.PagingFilteringContext.AvailableSortOptions)
+    {
+        if (first++ > 0)
+        {
+            firstCss = "";
+        }
+
+        if (item.Value.Contains("orderby=15"))
+        {
+            <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                <a href="@item.Value" rel="nofollow">最新</a>
+            </li>
+        }
+        else if (item.Value.Contains("orderby=11"))
+        {
+            <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                <a href="@item.Value" rel="nofollow">价格从高到低</a>
+            </li>
+        }
+        else if (item.Value.Contains("orderby=10"))
+        {
+            <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                <a href="@item.Value" rel="nofollow">价格从低到高</a>
+            </li>
+        }
+
+
+    }
+}
+                        </ul>
+                    </dd>
+                    <dd class="float-left">
+                        <div class="fPrice">
+                            @Html.Partial("_FilterVipBox", Model.PagingFilteringContext)
+   
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <!--商品列表-->
+            <div class="col col21">
+                <ul class="vip-item-list clearfix">
+                    @foreach (var product in Model.Products)
+                    {
+                        <li>
+                            <div class="vip-item-wrap">
+                                <a class="img-wrap" href="@Url.RouteUrl("Product", new { SeName = product.SeName })" target="_blank">
+                                    <img srcset="@product.DefaultPictureModel.ImageUrl" title="@product.DefaultPictureModel.Title" src="@product.DefaultPictureModel.ImageUrl" alt="@product.DefaultPictureModel.AlternateText " />
+                                </a>
+                                <p class="item-title"><a href="@Url.RouteUrl("Product", new { SeName = product.SeName })" target="_blank">@product.Name</a></p>
+                                <div class="vip-item-price">
+                                    @product.ProductPrice.Price
+                                    <del>@product.ProductPrice.OldPrice</del>
+                                </div>
+                                @{
+                        //prepare "Add to cart" AJAX link
+                        string addtocartlink = "", addtowishlink = "";
+                        var shoppingCartTypeId = (int)Nop.Core.Domain.Orders.ShoppingCartType.ShoppingCart;
+                        var shoppingWishTypeId = (int)Nop.Core.Domain.Orders.ShoppingCartType.Wishlist;
+                        var quantity = 1;
+                        if (product.ProductPrice.ForceRedirectionAfterAddingToCart)
+                        {
+                            addtowishlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingWishTypeId, quantity = quantity, forceredirection = product.ProductPrice.ForceRedirectionAfterAddingToCart });
+                            addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = product.ProductPrice.ForceRedirectionAfterAddingToCart });
+                        }
+                        else
+                        {
+                            addtowishlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingWishTypeId, quantity = quantity, });
+                            addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+                        }
+                                }
+                                @if (!product.ProductPrice.DisableBuyButton)
+                                {
+                                    <a class="buy-btn" href="javascript: void(0);" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;">立即购买</a>
+
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <div class="xm-pagenavi">
+                    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+                </div>
+            </div>
+            <!--商品列表 END-->
+
+            </div>
+  
+    </div>
+
+
+
+    <!-- .site-header END -->
+
+    <div class="site-footer">
+        <div class="container">
+            <div class="footer-service">
+                <ul class="list-service clearfix">
+                    <li>
+                        <a href="" target="_blank">
+                            <i class="iconfont">&#xf02b5;</i>
+                            <strong>品质保证</strong>
+                            <span>品质护航，购物无忧</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" target="_blank">
+                            <i class="iconfont">&#xf029f;</i>
+                            <strong>7天无理由退货</strong>
+                            <span>收到商品7天内无理由退货服务</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" target="_blank">
+                            <i class="iconfont">&#xf0297;</i>
+                            <strong>15天免费换货</strong>
+                            <span>质量问题免费换新货承诺</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" target="_blank">
+                            <i class="iconfont">&#xf02b8;</i>
+                            <strong>100%</strong>
+                            <span>正品保证</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" target="_blank">
+                            <i class="iconfont">&#xf02a4;</i>
+                            <strong>超千万用户</strong>
+                            <span>口碑信赖</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            @Html.Action("Footer", "Common")
+        </div>
+    </div>
+    <!-- .site-footer END -->

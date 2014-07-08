@@ -1,0 +1,2 @@
+E:\Work\ruicui\Ecommerce\RuiCui\Presentation\Nop.Web\obj\Release\Nop.Web.csproj.App.config
+E:\Work\ruicui\Ecommerce\RuiCui\Presentation\Nop.Web\obj\Release\Nop.Web.csprojResolveAssemblyReference.cache

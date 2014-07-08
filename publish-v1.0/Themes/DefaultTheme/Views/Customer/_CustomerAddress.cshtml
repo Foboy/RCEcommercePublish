@@ -1,0 +1,11 @@
+﻿@model Nop.Web.Models.Common.AddressModel
+@{
+    Layout = null;
+}
+@{
+    var dataDictAddress = new ViewDataDictionary();
+    //Merge ModelState (required for validation)
+    dataDictAddress.ModelState.Merge(ViewData.ModelState);
+    dataDictAddress.TemplateInfo.HtmlFieldPrefix = "Address";
+    @Html.Partial("_CreateOrUpdateAddress", Model, dataDictAddress)
+}

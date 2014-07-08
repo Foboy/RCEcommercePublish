@@ -1,0 +1,85 @@
+﻿@model CustomerAddressListModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddScriptParts("~/Themes/DefaultTheme/Content/js/public.usercenter.js");
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    var storeLocation = EngineContext.Current.Resolve<Nop.Core.IWebHelper>().GetStoreLocation();
+    var mvcForm = Model.EditAddress.Id > 0 ? string.Format("{0}customer/addressedit/{1}", storeLocation, Model.EditAddress.Id) : string.Format("{0}customer/addressadd", storeLocation);
+    var addressUrl = string.Format("{0}customer/addresses", storeLocation);
+}
+@section left
+{
+    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+}
+<div class="xm-line-box uc-box">
+    <div class="box-hd">
+        <h3 class="title">收货地址管理</h3>
+    </div>
+    <div class="box-bd">
+        <div class="compensate-content">
+            <h4>@(Model.EditAddress.Id > 0 ? "编辑" : "新增")收货地址</h4>
+            <form action="" id="co-addresses-form">
+                <div id="co-address-html">
+                   @Html.Partial("_CustomerAddress", Model.EditAddress)
+                </div>
+                <div class="buttons" id="addresses-buttons-container">
+                    <input type="button" onclick="Address.save(); return false;" value="保存" class="btn btn-primary btn-small" />
+                    <span id="loading-please-wait" class="please-wait" style="display: none;"> 正在保存...</span>
+                </div>
+            </form>
+            <script type="text/javascript">
+                Address.init('#co-addresses-form', '@(mvcForm)', '@(addressUrl)');
+            </script>
+        </div>
+    </div>
+    <div class="box-bd">
+        <h4>已存收货地址</h4>
+        <div class="uc-order-list-box">
+            @if (Model.Addresses.Count > 0)
+            {
+                <ul class="uc-order-detail-list">
+                    <li class="uc-order-detail-item">
+                        <table class="order-detail-table">
+                            <thead>
+                                <tr>
+                                    <th>收货人</th>
+                                    <th>所在地区</th>
+                                    <th>街道地址</th>
+                                    <th>邮编</th>
+                                    <th>电话/手机</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Addresses.Count; i++)
+                                {
+                                    var address = Model.Addresses[i];
+
+                                    <tr class="address-table-text">
+                                        <td>@address.FirstName</td>
+                                        <td>@(address.CountryName + "省" + address.StateProvinceName)</td>
+                                        <td>@address.Address1</td>
+                                        <td>@address.ZipPostalCode</td>
+                                        <td>@address.PhoneNumber</td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="location.href='@(Url.RouteUrl("CustomerAddressListEdit", new { addressId = address.Id }))'">编辑</a>|
+                                            <a href="javascript:void(0)" onclick="if (confirm('@(T("Common.AreYouSure").Text)')) {location.href='@(Url.RouteUrl("CustomerAddressDelete", new { addressId = address.Id }))';}">删除</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                @T("Account.CustomerAddresses.NoAddresses")
+            }
+        </div>
+        </div>
+</div>

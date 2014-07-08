@@ -1,0 +1,15 @@
+﻿@using Nop.Core.Infrastructure
+@using Nop.Web.Framework.Themes
+@{
+    var currentThemeName = EngineContext.Current.Resolve<IThemeContext>().WorkingDesktopTheme;
+    var logoPath = "~/Themes/" + currentThemeName + "/Content/images/logo.gif";
+}
+
+<div class="header">
+    @Html.Widget("header")
+
+    <div class="header-selectors-wrapper">
+
+        @Html.Widget("header_selectors")
+    </div>
+</div>

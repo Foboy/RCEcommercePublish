@@ -1,0 +1,140 @@
+﻿@model FooterModel
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Common;
+
+<div class="footer-links clearfix">
+    <dl class="col-links">
+        <dt>帮助中心</dt>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("购物指南") })">购物指南</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("常见问题") })">常见问题</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("用户协议") })">用户协议</a></dd>
+    </dl>
+    <dl class="col-links">
+        <dt>售后服务</dt>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("正品承诺") })">正品承诺</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("售后咨询") })">售后咨询</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("退货政策") })">退货政策</a></dd>
+    </dl>
+    <dl class="col-links">
+        <dt>配送方式</dt>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("配送说明") })">配送说明</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("运费说明") })">运费说明</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("验货签收") })">验货签收</a></dd>
+    </dl>
+    <dl class="col-links">
+        <dt>关于瑞翠</dt>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("了解瑞翠") })">了解瑞翠</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("联系我们") })">联系我们</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("关注我们") })">关注我们</a></dd>
+    </dl>
+
+
+    @*<dl class="col-links">
+        <dt>@T("Footer.Information")</dt>
+        @if (Model.SitemapEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a></dd>
+        }
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("shippinginfo") })">@T("ShippingReturns")</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("隐私声明") })">@T("PrivacyNotice")</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("conditionsofuse") })">@T("ConditionsOfUse")</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Topic", new {SeName = Html.GetTopicSeName("aboutus") })">@T("AboutUs")</a></dd>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></dd>
+    </dl>
+    <dl class="col-links">
+        <dt>@T("Footer.CustomerService")</dt>
+        <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </dd>
+        @if (Model.NewsEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("NewsArchive")">@T("News")</a></dd>
+        }
+        @if (Model.BlogEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Blog")">@T("Blog")</a></dd>
+        }
+        @if (Model.ForumEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></dd>
+        }
+        @if (Model.RecentlyViewedProductsEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("RecentlyViewedProducts")">@T("Products.RecentlyViewedProducts")</a></dd>
+        }
+        @if (Model.CompareProductsEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("CompareProducts")">@T("Products.Compare.List")</a></dd>
+        }
+        @if (Model.RecentlyAddedProductsEnabled)
+        {
+            <dd><a target="_blank" rel="nofollow" href="@Url.RouteUrl("RecentlyAddedProducts")">@T("Products.NewProducts")</a></dd>
+        }
+    </dl>*@
+    @*<dl class="col-links">
+        <dt>@T("Footer.MyAccount")</dt>
+        <dd><a target="_blank" href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></dd>
+        @if (!Model.HideOrders)
+        {
+            <dd><a target="_blank" href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></dd>
+        }
+        @if (!Model.HideAddresses)
+        {
+            <dd><a target="_blank" href="@Url.RouteUrl("CustomerAddresses")">@T("Account.CustomerAddresses")</a></dd>
+        }
+        @if (Model.ShoppingCartEnabled)
+        {
+            <dd><a target="_blank" href="@Url.RouteUrl("ShoppingCart")">@T("ShoppingCart")</a></dd>
+        }
+        @if (Model.WishlistEnabled)
+        {
+            <dd><a target="_blank" href="@Url.RouteUrl("Wishlist")">@T("Wishlist")</a></dd>
+        }
+    </dl>
+    <dl class="col-links">
+        <dt>@T("Footer.FollowUs")</dt>
+        @if (!string.IsNullOrEmpty(Model.FacebookLink))
+        {
+            <dd><a href="@Model.FacebookLink" target="_blank">@T("Footer.FollowUs.Facebook")</a></dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.TwitterLink))
+        {
+            <dd><a href="@Model.TwitterLink" target="_blank">@T("Footer.FollowUs.Twitter")</a></dd>
+        }
+        @if (Model.NewsEnabled)
+        {
+            <dd><a href="@Url.RouteUrl("NewsRSS", new {languageId = Model.WorkingLanguageId})">@T("Footer.FollowUs.RSS")</a></dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.YoutubeLink))
+        {
+            <dd><a href="@Model.YoutubeLink" target="_blank">@T("Footer.FollowUs.Youtube")</a></dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.GooglePlusLink))
+        {
+            <dd><a href="@Model.GooglePlusLink" target="_blank">@T("Footer.FollowUs.GooglePlus")</a></dd>
+        }
+    </dl>*@
+    <div class="col-contact">
+        <p class="phone">400-123-5678</p>
+        <p>周一至周日 8:00-18:00<br />（仅收市话费）</p>
+        <a class="btn btn-primary btn-small" href="" target="_blank">24小时在线客服</a>
+    </div>
+</div>
+<div class="footer-info clearfix">
+    <div class="info-links">
+        <a href="" target="_blank"><img src="~/Themes/DefaultTheme/Content/Images/cnnicVerifyseal.png" alt="可信网站" /></a> <a href="" target="_blank"><img alt="诚信网站" src="~/Themes/DefaultTheme/Content/Images/szfwVerifyseal.gif" /></a> <a href="" target="_blank"><img alt="诚信网站" src="~/Themes/DefaultTheme/Content/Images/save.jpg" /></a>
+    </div>
+</div>
+<div class="footer">
+    @if (Model.DisplayTaxShippingInfoFooter)
+    {
+        var inclTax = EngineContext.Current.Resolve<IWorkContext>().TaxDisplayType == TaxDisplayType.IncludingTax;
+        <div class="footer-tax-shipping">
+            @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("shippinginfo") }))
+        </div>
+    }
+    <div class="footer-disclaimer">
+        @T("Content.CopyrightNotice", DateTime.Now.Year, Model.StoreName)
+    </div>
+    @Html.Widget("footer")
+</div>

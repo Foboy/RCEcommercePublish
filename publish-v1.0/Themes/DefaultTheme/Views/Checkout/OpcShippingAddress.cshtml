@@ -1,0 +1,61 @@
+﻿@model CheckoutShippingAddressModel
+@using Nop.Web.Models.Checkout;
+@if (Model.ExistingAddresses.Count > 0)
+{
+    <ul class="address-list">
+        @foreach (var address in Model.ExistingAddresses)
+        {
+            var addressLine = "";
+            if (address.CountryEnabled && !String.IsNullOrWhiteSpace(address.CountryName))
+            {
+                addressLine += address.CountryName + "省";
+            }
+            if (address.StateProvinceEnabled && !String.IsNullOrEmpty(address.StateProvinceName))
+            {
+                addressLine += " " + address.StateProvinceName;
+            }
+            if (address.CityEnabled && !String.IsNullOrEmpty(address.City))
+            {
+                addressLine += " " + address.City;
+            }
+            if (address.StreetAddressEnabled && !String.IsNullOrEmpty(address.Address1))
+            {
+                addressLine += " " + address.Address1;
+            }
+
+            addressLine += " (" + address.FirstName + " 收)";
+            <li class='@(address.Id==Model.UsallyId?"selected":"")' onclick="Shipping.selectAddress(this)" data-addid="@(address.Id)">
+                <div class="address-info">
+                    <input type="radio" name="shipping_address_radio" value="@(address.Id)" @(address.Id == Model.UsallyId ? "checked" : "") />
+                    <label class="user-address">
+                        @(addressLine)
+                        <em>@(address.PhoneNumber)</em>
+                    </label>
+                </div>
+            </li>
+        }
+
+    </ul>
+    <input type="text" value="@(Model.UsallyId)" name="shipping_address_id" id="shipping-address-select" style="display:none;">
+}
+<div class="checkout-data">
+    <div class="section new-shipping-address" id="shipping-new-address-form" style="display:none;">
+        <div class="enter-address">
+            <div class="enter-address-body">
+                @{
+                    var dataDictAddress = new ViewDataDictionary();
+                    //Merge ModelState (required for validation)
+                    dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                    dataDictAddress.TemplateInfo.HtmlFieldPrefix = "ShippingNewAddress";
+                    @Html.Partial("_CreateOrUpdateAddress", Model.NewAddress, dataDictAddress)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<a class="btn btn-white btn-small" href="javascript:void(0)" onclick="Shipping.newAddress(true)" id="shipping-new-address-btn">
+    <i class="iconfont font12">&#xf0175;</i>
+    使用新地址
+</a>
+

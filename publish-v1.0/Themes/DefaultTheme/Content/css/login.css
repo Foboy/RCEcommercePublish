@@ -1,0 +1,114 @@
+/*.loading-img{display: none!important;}*/
+html,body,ul,li,p,h1,div,a,img{padding: 0; margin: 0;}
+html,body{background:#f9f9f9; line-height: 1.5; color: #333; font-size: 12px;}
+body,input{font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;}
+a,label, :focus{outline:0 none;}
+a,img{border:0 none;}
+a{text-decoration: none;}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  a{background-color:transparent;}
+}
+html,body{height: 100%; width: 100%;}
+.layout{min-height: 720px; height:100%; _height:720px; position:relative;}
+.nl-content{text-align: center; width: 100%;
+position: absolute; top:50%; left:0; margin-top: -317px;
+  }/* 这里默认渲染了634px高 */
+.nl-logo-area{margin-bottom: 50px; height: 82px;}
+.nl-login-title{font-size: 40px; margin-bottom: 10px; color: #000;}
+.nl-login-intro{color: #8d8d8d; font-size: 14px; margin-bottom: 30px;}
+.nl-login-intro a{color: #8d8d8d;}
+.nl-login-intro a:hover{color: #ff7e00; text-decoration: none; }
+.nl-phone-tip{width: 324px; margin:0 auto; text-align: left; height: 36px;}
+
+.nl-footer{text-align: center; padding-bottom: 20px; position: absolute; bottom: 0; left: 0; width: 100%;}
+.nl-f-nav{margin-bottom: 10px;}
+.nl-f-nav a{display: inline-block; *zoom:1; *display: inline; color: #919191; padding: 0 6px;  line-height: 1.2;}
+.nl-f-nav a:hover{color: #545454; font-weight: bold;}
+.nl-f-copyright{color: #999;}
+
+.zh_CN .zh-cn,
+.zh_TW .zh-tw,
+.en .zh-en{color: #545454; font-weight: bold;}
+.zh_TW .nl-phone-tip{text-align:center;}
+.minilogin-frame{margin-left:100px;}
+/*窗口最小化模式*/
+.mini-window .layout{width:500px;height:500px;position:absolute;top:50%;left:50%;margin-top:-245px;margin-left:-250px;min-height:500px;}
+.mini-window .nl-content{position:static;margin:0;overflow:hidden;}
+.mini-window .nl-footer{padding:0;position:static;}
+.mini-window .nl-login-intro{margin:5px 0;}
+.mini-window .nl-logo-area{margin:0;height:auto}
+.mini-window .nl-footer,
+.mini-window .nl-phone-tip{display:none}
+.mini-window .nl-login-title{font-size:28px;margin-bottom:0;margin-top:10px;}
+.mini-window .minilogin-frame{margin-left:50px}
+.mini-window .strong-color{color:#ff7e00;font-weight:bold;}
+.mini-window .lsrp-appname{padding:5px;font-weight:normal;font-size:20px;}
+/*定制显示强制隐藏显示*/
+.display-custom-hide{display:none!important;}
+.display-custom-show-block{display:block!important;}
+.display-custom-show-inline{display:inline!important;}
+.display-custom-show-inline-block{display:inline-block!important;}
+
+
+.ng-form-area {display:block!important; margin: 0 auto; width: 324px; padding-top: 10px; height:330px; overflow: hidden;}
+.shake-area{position: relative;}
+.enter-area {position: relative;}
+.enter-item {background: #fff; width: 298px; display: block; height: 20px; line-height: 20px; padding: 12px 10px; border: 1px solid #e6e6e6; border-radius: 6px; color: #333; font-size: 14px; font-weight: bold;
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;}
+.enter-item:focus {box-shadow: inset 0 0 8px #eaeaea; background: #fdfdfd;}
+.first-enter-item {border-radius: 6px 6px 0 0;}
+.last-enter-item { border-radius: 0 0 6px 6px; margin-top:-1px; _margin-top: -3px;}
+.code-enter-item {width: 104px; display: inline-block; *display: inline; zoom: 1; vertical-align: top;}
+.code-img {display: inline-block; *display: inline; zoom: 1; margin-right: 10px; width: 180px; height: 60px; border-radius: 6px; background: #ccc; vertical-align: top;}
+.error-ico {display: inline-block; *display: inline; zoom: 1; width: 14px; height: 14px; vertical-align: middle; margin-right: 6px; background: -60px -38px no-repeat;}
+.error-msg {color: #ff7448; vertical-align: middle; font-size: 14px;}
+.placeholder {font-style: normal; color: #c2c2c2; font-size: 14px; line-height: 20px; display: inline-block; *display: inline; zoom: 1;}
+.fadeOut{color:#d7d7d7;}
+.placeholder,
+.error-tip {position: absolute; top: 14px; left: 10px;}
+.placeholder{left: 12px;}
+.error-tip{display: none; width: 300px; background:#fff; height: 18px; line-height: 16px;}
+.img-code-area .error-tip{width: 110px;}
+.error .error-tip{display: block; }
+.error .placeholder{display: none;}
+.img-code-area .placeholder,
+.img-code-area .error-tip{left:206px;}
+.ng-foot{height: 18px; margin-top: 16px;}
+.ng-link-area {text-align: right; color: #999; position: relative; float: right; width: 180px; text-align: right;}
+.ng-link-area a {color: #999;}
+.ng-link-area a:hover {color: #ff7e00;}
+.third-area,
+.button {cursor:pointer; background: #fff; border: 1px solid #e5e5e5; border-radius: 6px; color: #7c7c7c; display: block; font-size: 16px; height: 44px; 
+    line-height: 44px; text-align: center; width: 320px; -webkit-appearance: none; -moz-appearance: none; appearance: none;}
+.button:hover {color: #333;}
+.orange {background:none; border:0 none; background: #F68B1F; color: #fff; border: 1px solid #F68B1F;}
+.orange:hover {color:#fff; background: #ff936a; border: 1px solid #ff936a;}
+.orange:active {color:#fff; background: #f6683b; border: 1px solid #f6683b;}
+.third-area {line-height: 60px; _line-height: 45px; position: absolute; right:2px; top: 34px; _top:35px;}
+.third-area a {display: inline-block; *display: inline; zoom: 1; width: 28px; height: 28px; font-size: 0; overflow: hidden; margin: 0 4px;}
+.ta-qq {background: 0 0 no-repeat;}
+.ta-weibo {background: -30px 0 no-repeat;}
+.ta-alipay {background: 0 -30px no-repeat;}
+.ta-facebook{background: -30px -30px no-repeat;}
+.third-area a.ta-facebook{display: none;}
+.corner,
+.corner-inner {width: 0; height: 0; border: 10px dotted transparent; overflow: hidden; position: absolute; top: -20px; right: 80px;}
+.corner {border-bottom: 10px solid #d6d6d6;}
+.corner-inner {border-width: 9px; border-bottom: 9px solid #fff; top: -18px; right: 81px;}
+.ng-cookie-area {color: #999; vertical-align: middle; width: 120px; float: left; cursor: pointer;}
+.checkbox {display: inline-block; *display: inline; zoom: 1; width: 15px; height: 15px; overflow: hidden; vertical-align: middle; margin-right: 6px; cursor: pointer; background: -60px -20px no-repeat;}
+.checked {background: -60px 0 no-repeat; zoom:1;}
+.shake-area,
+.code-enter-item {margin-bottom: 16px;}
+.button {margin: 16px 0 0 0;}
+.hide {
+visibility: hidden !important;
+}
+.ta-qq,.ta-weibo,.ta-alipay,.ta-facebook,.checkbox,.checked,.error-ico{background-image: url(../../Content/Images/sprite_all2.png); 
+    _background-image: url(../../Content/Images/sprite_all2.png)}
+/* 第三方存在的时候支付宝不出现 */
+.has_third .ta-alipay{display: none;}
+.en .ng-cookie-area{width: 110px;}
+.en .ng-link-area{width: 210px;}
+.en a.ta-facebook,
+.zh_tw a.ta-facebook{display: inline-block; *display: inline; zoom: 1;}

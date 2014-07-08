@@ -1,0 +1,86 @@
+﻿@model HeaderLinksModel
+@using Nop.Web.Models.Common;
+@Html.Widget("header_links_before")
+@if (Model.IsAuthenticated)
+{
+    @*<a href="@Url.RouteUrl("CustomerInfo")" class="account">@Model.CustomerEmailUsername</a>*@
+    <span id="top_links_user_center_container">
+        <span>欢迎您 </span><span class="bcolor top_links_user_center"> @Model.CustomerEmailUsername</span>
+        <span class="arrow top_links_user_center"></span>
+        <div class="user-info-menu" id="top_links_user_center_block" style="display:none;">
+            <ul>
+                <li>
+                    <a href="@Url.RouteUrl("CustomerInfo")">个人中心</a>
+                </li>
+                <li>
+                    <a href="@Url.RouteUrl("Logout")">@T("Account.Logout")</a>
+                </li>
+            </ul>
+        </div>
+    </span>
+    @*<a href="@Url.RouteUrl("Logout")">@T("Account.Logout")</a>*@
+}
+else
+{
+    <a href="@Url.RouteUrl("Register")" data-needlogin="true">@T("Account.Register")</a><span class="sep">|</span>
+    <a href="@Url.RouteUrl("Login")">@T("Account.Login")</a>
+}
+@if (Model.AllowPrivateMessages)
+{
+    <span class="sep">|</span><a href="@Url.RouteUrl("PrivateMessages", new { tab = "" })" class="ico-inbox">@T("PrivateMessages.Inbox")</a>
+    @Model.UnreadPrivateMessages
+
+    if (!string.IsNullOrEmpty(Model.AlertMessage))
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                displayPopupNotification('@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.AlertMessage))', 'success', false);
+            });
+        </script>
+    }
+}
+@if (Model.WishlistEnabled)
+{
+    <span class="sep">|</span><a href="@Url.RouteUrl("Wishlist")">
+        <span>我的收藏</span>
+        <span id="wishlist-qty">@T("Wishlist.HeaderQuantity", Model.WishlistItems)</span>
+    </a>
+}
+@Html.Widget("header_links_after")
+<script type="text/javascript">
+    $(document).ready(function () {
+        var usercentertimeout,display = false;
+        $(".top_links_user_center").on({
+            click: function () {
+                window.clearTimeout(usercentertimeout),
+                usercentertimeout = window.setTimeout(function () {
+                    display = true;
+                    $("#top_links_user_center_block").show();
+                },
+                100);
+            }
+        });
+        $("#top_links_user_center_container").on({
+            mouseenter: function () {
+                if (display)
+                {
+                    window.clearTimeout(usercentertimeout),
+                    usercentertimeout = window.setTimeout(function () {
+                        display = true;
+                        $("#top_links_user_center_block").show();
+                    },
+                    100);
+                }
+            },
+            mouseleave: function () {
+                window.clearTimeout(usercentertimeout),
+                usercentertimeout = window.setTimeout(function () {
+                    display = false;
+                    $("#top_links_user_center_block").hide();
+                },
+                100);
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,149 @@
+﻿@model TopSpecsMenuModel
+@using Nop.Core.Domain
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Catalog;
+@{
+    var isRtl = this.ShouldUseRtlTheme();
+    var supportResponsive = EngineContext.Current.Resolve<StoreInformationSettings>().ResponsiveDesignSupported;
+    
+}
+@helper FormatPriceRangeText(CatalogPagingFilteringModel.PriceRangeFilterItem filterItem)
+{
+    string rangeText = "";
+    Func<decimal,string> parseDecimal = (price) => {
+        if (price >= 10000)
+        {
+            var shortPrice = price / (decimal)10000;
+            if (Math.Floor(shortPrice) * 10 < shortPrice * 10)
+            {
+                return shortPrice.ToString("N1") + "万";
+            }
+            else
+            {
+                return shortPrice.ToString("N0") + "万";
+            }
+        }
+        else
+        {
+            return Math.Round(price).ToString("N0");
+        }
+    };
+    string from = parseDecimal(filterItem.FromDecimal);
+    string to = parseDecimal(filterItem.ToDecimal);
+        
+    if (String.IsNullOrWhiteSpace(filterItem.From) || Math.Round(filterItem.FromDecimal) <= 0)
+    {
+        rangeText = string.Format("<span class=\"PriceRange\">{0}以内</span>", to);
+    }
+    else if (String.IsNullOrWhiteSpace(filterItem.To) || Math.Round(filterItem.ToDecimal) <= 0)
+    {
+        rangeText = string.Format("<span class=\"PriceRange\">{0}以上</span>", from);
+    }
+    else
+    {
+        rangeText = string.Format("<span class=\"PriceRange\">{0}</span> - <span class=\"PriceRange\">{1}</span>", from, to);
+    }
+    <text>@Html.Raw(rangeText)</text>
+}
+@if (Model.Categories.Count > 0)
+{
+    foreach (var category in Model.Categories)
+    {
+        var specModel = category.SpecificationFilter;
+        var priceModel = category.PriceRangeFilter;
+        var notFilteredItemsGroups = specModel.NotFilteredItems.GroupBy(x => x.SpecificationAttributeName);
+        <li class="nav-category-item nav-category-item-first ">
+            @*顶部翡翠-水墨玉*@
+            <div class="nav-category-content">
+                <a class="categoryone" href="@Url.RouteUrl("Category", new { SeName = category.SeName })">
+                    @category.Name
+                </a>
+                <div class="links">
+                    @foreach (var sub in category.SubCategories)
+                    {
+                        <a class="title" href="@Url.RouteUrl("Category", new { SeName = sub.SeName })">
+                            @sub.Name
+                        </a>
+                    }
+                </div>
+
+            </div>
+        </li>
+    @*类*@
+                    if (specModel.NotFilteredItems.Count > 0)
+            {
+                        var displayCount = 5;
+                foreach (var group in notFilteredItemsGroups)
+                {
+                    displayCount--;
+                    var groupList = group.ToList();
+                    if (displayCount < 0)
+                    {
+                        break;
+                    } 
+                    <li class="nav-category-item">
+                        <div class="nav-category-content">
+                            <a class="basecolor">@groupList[0].SpecificationAttributeName</a>
+                            <div class="links">
+                                    @for (int i = 0; i < groupList.Count && i<3;i++ )
+                                    {
+                                        var spec = groupList[i];
+                                        <a href="@spec.FilterUrl">@spec.SpecificationAttributeOptionName</a>
+                                    }
+                            </div>
+                        </div>
+                        @if (groupList.Count > 3)
+                        {
+                            <div class="nav-category-children">
+                                <ul class="children-list">
+                                    @for (int i = 3; i < groupList.Count; i++)
+                                    {
+                                        var spec = groupList[i];
+                                        <li>
+                                            <a href="@spec.FilterUrl">
+                                                <span class="text">@spec.SpecificationAttributeOptionName</span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                        }
+                    </li>
+                }
+            }
+            @*价格区间*@
+                <li class="nav-category-item">
+                    <div class="nav-category-content">
+                        <a class="basecolor">价格区间</a>
+                        <div class="links">
+                            @for (int i = 0; i < priceModel.Items.Count && i < 2; i++)
+                            {
+                                var item = priceModel.Items[i];
+                                <a href="@item.FilterUrl">@FormatPriceRangeText(item)</a>
+                            }
+                        </div>
+                    </div>
+                    @if (priceModel.Items.Count > 3)
+                    {
+                        <div class="nav-category-children">
+                            <ul class="children-list">
+                                @for (int i = 2; i < priceModel.Items.Count; i++)
+                                {
+                                    var item = priceModel.Items[i];
+                                    <li>
+                                        <a href="@item.FilterUrl">
+                                            <span class="text">@FormatPriceRangeText(item)</span>
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    }
+                </li>
+        break;
+    }
+}
+
+

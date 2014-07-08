@@ -1,0 +1,19 @@
+﻿@model ShoppingCartModel
+@using Nop.Web.Models.Checkout
+@using Nop.Web.Models.ShoppingCart;
+@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ShoppingCart").Text);
+
+    Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/shopcart.css");
+}
+@if (!Model.OnePageCheckoutEnabled)
+{
+    @Html.Action("CheckoutProgress", "Checkout", new {step = CheckoutProgressStep.Cart})
+}
+@Html.Partial("OrderSummary", Model)
+<div class="xm-line-box hot-pro J_hotProCarousel">
+    @Html.Action("CrossSellProducts", "Catalog")
+</div>

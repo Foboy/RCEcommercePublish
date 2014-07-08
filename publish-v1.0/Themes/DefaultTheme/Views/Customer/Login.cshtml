@@ -1,0 +1,109 @@
+﻿@model LoginModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Login").Text);
+
+    //register URL with return URL (if specified)
+    var registerUrl = Url.RouteUrl("Register");
+    if (!String.IsNullOrEmpty(this.Context.Request.QueryString["returnUrl"]))
+    {
+        var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+        registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>瑞翠华光科技 - 登录</title>
+    <link href="~/Themes/DefaultTheme/Content/css/login.css" rel="stylesheet" />
+    <script src="~/Themes/DefaultTheme/Content/js/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#other_login").click(function () {
+                $("#third_area").toggleClass("hide");
+            });
+        })
+    </script>
+
+</head>
+<body>
+    <div class="layout">
+        <div class="nl-content">
+            <div class="nl-logo-area">
+                <a href="javascript:void(0)">
+                    <img src="~/Themes/DefaultTheme/Content/Images/logo.jpg" width="70" />
+                </a>
+            </div>
+            <h1 class="nl-login-title">瑞翠华光</h1>
+            <div>
+                <p class="nl-login-intro">
+                    <a href="#" target="_blank">slogan</a>
+                </p>
+            </div>
+            <div class="nl-frame-container">
+                <div class="ng-form-area show-place">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="message-error">
+                            @Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text)
+                        </div>
+                        <div class="inputs">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "enter-item first-enter-item", autofocus = "autofocus", placeholder = "邮箱/手机号码" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+
+                        <div class="inputs">
+                            @*@Html.LabelFor(m => m.Password, new { }, ":")*@
+                            @Html.PasswordFor(m => m.Password, new { @class = "enter-item last-enter-item", placeholder = "密码" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+
+                        if (Model.DisplayCaptcha)
+                        {
+                            <div class="captcha-box">
+                                @Html.Raw(Html.GenerateCaptcha())
+                            </div>
+                        }
+                        <div class="buttons">
+                            <input class="button orange" type="submit" value="立即登录" />
+                        </div>
+                        <div class="ng-foot clearfix">
+                            <div id="custom_display_8">
+                                <div class="ng-cookie-area">
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "checkbox" })
+                                    @Html.LabelFor(m => m.RememberMe, "两周内自动登录")
+                                </div>
+                            </div>
+                            <div class="ng-link-area">
+                                <span>
+                                    <a id="other_login">其他方式登录</a>
+                                </span>
+                                <span> | </span>
+                                <span>
+                                    <a href="passwordrecovery">忘记密码？</a>
+                                </span>
+                                <div class="third-area hide" id="third_area">
+                                    @Html.Action("ExternalMethods", "ExternalAuthentication")
+                                    <em class="corner"></em>
+                                    <em class="corner-inner"></em>
+                                </div>
+                            </div>
+                        </div>
+                        <span>
+                            <a href="register" class="button" target="_blank">注册帐户</a>
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="nl-footer">
+            <p class="nl-f-copyright">版权所有 © 2014 瑞翠商城 保留所有权利 </p>
+        </div>
+    </div>
+</body>
+</html>

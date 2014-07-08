@@ -1,0 +1,26 @@
+﻿@model ProductAttributeModel
+
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+<table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Name):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Description):
+            </td>
+            <td class="adminData">
+                <div id="editor">
+                    @Html.EditorFor(x => x.Description, "UEditor")
+                </div>
+                @Html.ValidationMessageFor(model => model.Description)
+            </td>
+        </tr>
+    </table>

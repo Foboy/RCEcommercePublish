@@ -1,0 +1,14 @@
+﻿@model IList<ProductOverviewModel>
+@using Nop.Web.Models.Catalog;
+
+    <div class="product-grid cross-sells">
+        <div class="title">
+            <strong>@T("ShoppingCart.CrossSells")</strong>
+        </div>
+        @foreach (var product in Model)
+        {
+            <div class="item-box">
+                @Html.Partial("_ProductBox", product)
+            </div>
+        }
+    </div>

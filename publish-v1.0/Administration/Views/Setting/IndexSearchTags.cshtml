@@ -1,0 +1,49 @@
+﻿@model IndexSearchTagsSettingModel
+@{
+    
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+            首页搜索标签设置
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="btn btn-sm btn-primary btn-flat " value="@T("Admin.Common.Save")" />
+        </div>
+    </div>
+    @Html.Action("StoreScopeConfiguration", "Setting")
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.FirstTag_OverrideForStore, model => model.FirstTag, Model.ActiveStoreScopeConfiguration)
+                标签1(标签长度不多于4个字):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.FirstTag) 
+                @Html.ValidationMessageFor(model => model.FirstTag)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.SecondTag_OverrideForStore, model => model.FirstTag, Model.ActiveStoreScopeConfiguration)
+                标签2(标签长度不多于4个字):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.SecondTag) 
+                @Html.ValidationMessageFor(model => model.SecondTag)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.ThirdTag_OverrideForStore, model => model.FirstTag, Model.ActiveStoreScopeConfiguration)
+                标签3(标签长度不多于4个字):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.ThirdTag) 
+                @Html.ValidationMessageFor(model => model.ThirdTag)
+            </td>
+        </tr>
+    </table>
+}

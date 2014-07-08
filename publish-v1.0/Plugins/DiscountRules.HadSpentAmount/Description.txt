@@ -1,0 +1,8 @@
+﻿Group: Discount requirements
+FriendlyName: 用户一次性消费
+SystemName: DiscountRequirement.HadSpentAmount
+Version: 1.10
+SupportedVersions: 3.30
+Author: nopCommerce team
+DisplayOrder: 1
+FileName: Nop.Plugin.DiscountRules.HadSpentAmount.dll

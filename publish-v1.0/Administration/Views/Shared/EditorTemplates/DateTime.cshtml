@@ -1,0 +1,13 @@
+@using System.Globalization
+@model System.DateTime
+@{
+    Html.AppendScriptParts("~/Scripts/kendo/2014.1.318/cultures/kendo.culture.zh-CHS.min.js");
+}
+<input id="@ViewData.TemplateInfo.GetFullHtmlFieldId(string.Empty)" name="@ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty)" value="@((Model > DateTime.MinValue ? Model : DateTime.Today).ToString(CultureInfo.CurrentCulture.DateTimeFormat))" />
+<script>
+    $(document).ready(function () {
+        $("#@ViewData.TemplateInfo.GetFullHtmlFieldId(string.Empty)").kendoDateTimePicker({
+            format: "yyyy-MM-dd hh:mm" //format is used to format the value of the widget and to parse the input.
+        });
+    });
+</script>

@@ -1,0 +1,58 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+@*SKU*@
+@if (!String.IsNullOrWhiteSpace(Model.Sku) && Model.ShowSku)
+{
+    <dl class="product-info clearfix">
+        <dt>@T("Products.Sku")：</dt>
+        <dd itemprop="sku" id="sku-@Model.Id">@Model.Sku</dd>
+    </dl>
+}
+@*Manufacturer part number*@
+@if (!String.IsNullOrWhiteSpace(Model.ManufacturerPartNumber) && Model.ShowManufacturerPartNumber)
+{
+    <div class="product-info clearfix">
+        <span class="label">@T("Products.ManufacturerPartNumber")： </span>
+        <span class="product-info-content" id="mpn-@Model.Id">@Model.ManufacturerPartNumber</span>
+    </div>
+}
+@*GTIN*@
+@if (!String.IsNullOrWhiteSpace(Model.Gtin) && Model.ShowGtin)
+{
+    <div class="product-info clearfix">
+        <span class="label">@T("Products.GTIN")：</span>
+        <span class="product-info-content" id="gtin-@Model.Id">@Model.Gtin</span>
+    </div>
+}
+@*Stock availability*@
+@if (!String.IsNullOrWhiteSpace(Model.StockAvailability))
+{
+    <dl class="product-info">
+        <dt>@T("Products.Availability")：</dt>
+        <dd>@Model.StockAvailability</dd>
+    </dl>
+}
+@*Delivery date*@
+@if (Model.FreeShippingNotificationEnabled && Model.IsFreeShipping)
+{
+    <dl class="product-info">
+        <dt class="free-shipping">@T("Products.FreeShipping")</dt>
+    </dl>
+}
+@*Delivery date*@
+@if (!String.IsNullOrWhiteSpace(Model.DeliveryDate))
+{
+    <dl class="product-info clearfix">
+        <dt>发货时间： </dt>
+        <dd>@Model.DeliveryDate</dd>
+    </dl>
+}
+@*Vendor*@
+@if (Model.ShowVendor)
+{
+    <dl class="product-info clearfix">
+        <dt>@T("Products.Vendor")： </dt>
+        <dd><a href="@Url.RouteUrl("Vendor", new { SeName = Model.VendorModel.SeName })">@Model.VendorModel.Name</a></dd>
+    </dl>
+}
+

@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+@{
+    Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/index.css");
+}
+<script type="text/javascript">
+    /*<![CDATA[*/
+    navCategory = undefined;
+    var isCategoryToggled = "toggled";
+    var isSekillOpen = 1;
+    var isCommentOpen = 1;
+    /*]]>*/
+</script>
+<div class="row">
+    <div class="col col4">
+    </div>
+    <div class="col col13">
+        <div class="home-slider">
+            @Html.Widget("home_page_top")
+        </div>
+        <div class="home-hd-show clearfix">
+            @Html.Widget("home_page_root")
+        </div>
+    </div>
+    <div class="col col4">
+        @Html.Widget("home_page_right_top")
+        <div class="home-new">
+            @Html.Action("HomePageNews", "News")
+         
+        </div>
+        @Html.Widget("home_page_right2")
+    </div>
+</div>
+<!--热卖产品-->
+@Html.Widget("home_page_hot")
+<!-- 热卖产品 END -->
+<!--新品上架-->
+@Html.Widget("home_page_new")
+<!--新品上架 END-->
+<!--明星单品-->
+@Html.Widget("home_page_star")
+<!--明星单品 END-->
+<!--大家都喜欢-->
+@Html.Widget("home_page_like")
+<!--大家都喜欢 END-->

@@ -1,0 +1,152 @@
+﻿@model NewsItemModel
+@using Nop.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+    Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/news.css");
+}
+<div class="page news-item-page" style="display:none;">
+    <div class="page-title">
+        <h1>@Model.Title</h1>
+    </div>
+    <div class="page-body">
+        <div class="news-date">
+            @Model.CreatedOn.ToString("D")
+        </div>
+        @Html.Widget("newsitem_page_before_body")
+        <div class="news-body">
+            @Html.Raw(Model.Full)
+        </div>
+        @Html.Widget("newsitem_page_before_comments")
+        @if (Model.AllowComments)
+        {
+            <div class="fieldset new-comment">
+                <div class="title">
+                    <strong>@T("News.Comments.LeaveYourComment")</strong>
+                </div>
+                <div class="notifications">
+                    <div class="message-error">@Html.ValidationSummary(true)</div>
+                    @{
+            var result = TempData["nop.news.addcomment.result"] as string;
+                    }
+                    @if (!String.IsNullOrEmpty(result))
+                    {
+                        <div class="result">@result</div>
+                    }
+                </div>
+                @using (Html.BeginForm())
+                {
+                    <div class="form-fields">
+                        <div class="inputs">
+                            @Html.LabelFor(model => model.AddNewComment.CommentTitle, new { }, ":")
+                            @Html.TextBoxFor(model => model.AddNewComment.CommentTitle, new { @class = "comment-title" })
+                            @Html.ValidationMessageFor(model => model.AddNewComment.CommentTitle)
+                        </div>
+                        <div class="inputs">
+                            @Html.LabelFor(model => model.AddNewComment.CommentText, new { }, ":")
+                            @Html.TextAreaFor(model => model.AddNewComment.CommentText, new { @class = "comment-text" })
+                            @Html.ValidationMessageFor(model => model.AddNewComment.CommentText)
+                        </div>
+                        @if (Model.AddNewComment.DisplayCaptcha)
+                        {
+                            <div class="captcha-box">
+                                @Html.Raw(Html.GenerateCaptcha())
+                            </div>
+                        }
+                    </div>
+                    <div class="buttons">
+                        <input type="submit" name="add-comment" class="button-1 news-item-add-comment-button" value="@T("News.Comments.SubmitButton")" />
+                    </div>
+                }
+            </div>
+            if (Model.Comments.Count > 0)
+            {
+                <div class="comment-list">
+                    <div class="title">
+                        <strong>@T("News.Comments")</strong>
+                    </div>
+                    @foreach (var comment in Model.Comments)
+                {
+                <div class="news-comment">
+                    <div class="comment-info">
+                        <div class="user-info">
+                            @if (comment.AllowViewingProfiles)
+                                {
+                                <a href="@Url.RouteUrl("CustomerProfile", new { id = comment.CustomerId })" class="username">@(comment.CustomerName)</a>
+                                }
+                                else
+                                {
+                                <span class="username">@(comment.CustomerName)</span>
+                                }
+                            <div class="avatar">
+                                @if (!String.IsNullOrEmpty(comment.CustomerAvatarUrl))
+                                    {
+                                    <img src="@(comment.CustomerAvatarUrl)" class="avatar-img" title="avatar" alt="avatar" />
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-time">
+                            <label>@T("News.Comments.CreatedOn"):</label>
+                            <span class="stat-value">@comment.CreatedOn.ToString("g")</span>
+                        </div>
+                        <div class="comment-title">
+                            <strong class="comment-text">@comment.CommentTitle</strong>
+                        </div>
+                        <div class="comment-body">
+                            <p class="comment-text">@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(comment.CommentText, false, true, false, false, false, false))</p>
+                        </div>
+                    </div>
+                    @Html.Widget("newsitem_page_inside_comment")
+                </div>
+                }
+                </div>
+            }
+        }
+        @Html.Widget("newsitem_page_after_comments")
+    </div>
+</div>
+
+
+
+<!-- 导航面包削 END -->
+<div class="container breadcrumbs">
+    <a href='@Url.RouteUrl("HomePage")'>首页</a><span class="sep">/</span>
+    <a href="@Url.RouteUrl("NewsArchive")">新闻列表</a><span class="sep">/</span>
+</div>
+<!-- 导航面包削 END -->
+
+<div class="container">
+    <div class="row">
+        <!--新闻内容-->
+        <div class="col col19 offset1">
+            <div class="news-content">
+                <div class="type-post">
+                    <div class="news-title entry-meta-center" >@Model.Title</div>
+                    <div class="entry-meta entry-meta-center">
+                        发表于<span>@Model.CreatedOn.ToString("D")</span>
+                    </div>
+                    <div class="entry-content clearfix">
+                        @Html.Raw(Model.Full)
+                    </div>
+                </div>
+            </div>
+            <div class="news-page clearfix">
+                <div class="up-page">
+                    <a>上一页</a>
+                </div>
+                <div class="down-page">
+                    <a>下一页</a>
+                </div>
+            </div>
+        </div>
+        <!--新闻内容 END-->
+
+        <div class="col col1"></div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+﻿@using Nop.Web.Models.Catalog
+@model ProductSModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts("已售欣赏——瑞翠华光官网");
+}
+
+<div class="box-hd">
+    <div class="tj-sort">
+        <dl class="xm-filter-list xm-filter-list-first category-filter-list clearfix">
+            <dd class="float-left">
+                <ul id="typeOrder" class="clearfix">                  
+                    <li class="current first">
+                        <a href="" rel="nofollow">默认</a>
+                    </li>
+                    <li class="">
+                        <a href="" rel="nofollow">价格从低到高</a>
+                    </li>
+                    <li class="">
+                        <a href="" rel="nofollow">价格从高到低</a>
+                    </li>
+                    <li class="">
+                        <a href="" rel="nofollow">
+                            上架时间
+                            <i class="iconfont font12 hcolor">&#xf01a6;</i>@*向下*@
+                            @*<i class="iconfont font12 hcolor">&#xf01a3;</i>向上*@
+                        </a>
+                    </li>
+                </ul>
+            </dd>
+        </dl>
+
+    </div>
+</div>
+
+
+<div class="xm-goods-list-wrap sold-margin">
+    <ul class="xm-goods-list clearfix">
+        @foreach (var product in Model.Products)
+        {
+            <li class="item-box product-width">
+                <div class="xm-goods-item product-width" data-productid="64">
+                    <div class="item-thumb location">
+                        <a title="@product.Name " target="_blank" href="@Url.RouteUrl("Product", new { SeName = product.SeName })">
+                            <img srcset="@product.DefaultPictureModel.ImageUrl" title="@product.DefaultPictureModel.Title" src="@product.DefaultPictureModel.ImageUrl" alt="@product.DefaultPictureModel.AlternateText ">
+                        </a>
+                        <div class="sold-icon "></div>
+                    </div>
+                    
+                    <div class="item-info">
+                        <h3 class="item-title">
+                            <a target="_blank" href="@Url.RouteUrl("Product", new { SeName = product.SeName })">@product.Name </a>
+                        </h3>
+                        <div class="item-price">
+                            <del class="price old-price">@product.ProductPrice.OldPrice</del>
+                            <span class="price actual-price">@product.ProductPrice.Price</span>
+                        </div>
+                        <div class="item-star">
+                            <a title="@(product.Score)分">
+                                <span class="icon-stat @Html.ScoreToStar(product.Score) "></span>
+                            </a>
+                            @*<span class="item-comments" style="display:none;">0 人评价</span>*@
+                        </div>
+                        @{
+            //prepare "Add to cart" AJAX link
+            string addtocartlink = "", addtowishlink = "";
+            var shoppingCartTypeId = (int)Nop.Core.Domain.Orders.ShoppingCartType.ShoppingCart;
+            var shoppingWishTypeId = (int)Nop.Core.Domain.Orders.ShoppingCartType.Wishlist;
+            var quantity = 1;
+            if (product.ProductPrice.ForceRedirectionAfterAddingToCart)
+            {
+                addtowishlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingWishTypeId, quantity = quantity, forceredirection = product.ProductPrice.ForceRedirectionAfterAddingToCart });
+                addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = product.ProductPrice.ForceRedirectionAfterAddingToCart });
+            }
+            else
+            {
+                addtowishlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingWishTypeId, quantity = quantity, });
+                addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = product.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+            }
+                        }
+                        <div class="item-actions">
+                            @if (!product.ProductPrice.DisableBuyButton)
+                            {
+                                <a class="btn btn-small btn-primary J_addCart" href="javascript: void(0);" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;"><i class="iconfont font12 wcolor">&#xf0148;</i>购物车</a>
+                                <a class="btn btn-dake btn-small J_addFav" href="javascript: void(0);" data-productid="@product.Id"
+                                   onclick="AjaxCart.addproducttocart_catalog('@addtowishlink');return false;"><i class="iconfont font12 wcolor">&#xf0145;</i>收藏</a>
+                            }
+                        </div>
+                        
+                        <div class="item-flag"></div>
+                    </div>
+                </div>
+
+            </li>
+        }
+    </ul>
+</div>
+<div class="xm-pagenavi">
+    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+</div>

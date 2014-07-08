@@ -1,0 +1,91 @@
+﻿@model ProductQuestionModel
+@{
+    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    
+    //page title
+    ViewBag.Title = "常见问题";
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+        常见问题列表
+    </div>
+    <div class="options">
+        <a class="btn btn-sm btn-primary btn-flat " href="@Url.Action("Add", "ProductQuestion")">添加</a>
+  </div>
+
+<table class="adminContent">
+    <tr>
+        <td>
+            <div id="productreviews-grid"></div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#productreviews-grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: {
+                                    url: "@Html.Raw(Url.Action("List", "ProductQuestion"))",
+                                    type: "POST",
+                                    dataType: "json"
+                                }
+                            },
+                            schema: {
+                                data: "Data",
+                                total: "Total",
+                                errors: "Errors"
+                            },
+                            error: function(e) {
+                                display_kendoui_grid_error(e);
+                                // Cancel the changes
+                                this.cancelChanges();
+                            },
+                            pageSize: @(gridPageSize),
+                            serverPaging: true,
+                            serverFiltering: true,
+                            serverSorting: true
+                        },
+                        pageable: {
+                            refresh: true
+                        },
+                        scrollable: false,
+                        dataBound: onDataBound,
+                        columns: [
+                           
+                        {
+                            field: "Title",
+                            title: "问题",
+                            width: 150
+                        }, {
+                            field: "QuestionText",
+                            title: "回复",
+                            width: 300,
+                            encoded: false
+                        }, {
+                            field: "OrderNum",
+                            title: "顺序",
+                            width: 20
+                        }, 
+                        {
+                            field: "Id",
+                            title: "@T("Admin.Common.Edit")",
+                            width: 50,
+                            template: '<a  class="btn btn-sm btn-primary btn-flat " href="Edit/#=Id#">@T("Admin.Common.Edit")</a><a  class="btn btn-sm btn-primary btn-flat " href="Delete/#=Id#">删除</a>'
+                        }]
+                    });
+                });
+            </script>
+            <script type="text/javascript">
+
+                function onDataBound(e) {
+
+                
+                }
+
+               
+
+            </script>
+        </td>
+    </tr>
+</table>

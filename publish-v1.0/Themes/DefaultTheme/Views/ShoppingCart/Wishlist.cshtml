@@ -1,0 +1,222 @@
+﻿@model WishlistModel
+@using Nop.Web.Models.ShoppingCart;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Wishlist").Text);
+
+    Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/shopcart.css");
+}
+@section left
+{
+    @Html.Partial("../Customer/MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+}
+<div id="shopCartBox">
+    <div class="xm-line-box uc-box">
+        <div class="box-hd">
+            <h3 class="title">我的收藏夹</h3>
+        </div>
+        @if (Model.Items.Count > 0)
+        {
+            if (Model.Warnings.Count > 0)
+            {
+                <div class="message-error">
+                    <ul>
+                        @for (int i = 0; i < Model.Warnings.Count; i++)
+                        {
+                            <li>@Model.Warnings[i]</li>
+                        }
+                    </ul>
+                </div>
+            }
+            using (Html.BeginRouteForm("Wishlist", FormMethod.Post))
+            {
+                <input type="submit" id="updatecartSubmit" name="updatecart" value="@T("Wishlist.UpdateCart")" style="display:none;" />
+                <ul class="xm-goods-list clearfix">
+@foreach (var item in Model.Items)
+                        {
+                    <li class="item-box" style="width:270px;">
+                        <input type="checkbox" id="removeCheckbox@(item.Id)" name="removefromcart" value="@(item.Id)" style="display:none;" />
+                        <div class="xm-goods-item" >
+                            <div class="item-thumb">
+                                <a title="" href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })">
+                                    <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" srcset="@item.Picture.ImageUrl" title="@item.Picture.Title" />
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <h3 class="item-title">
+                                    <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })">@item.ProductName</a>
+                                </h3>
+                                <div class="item-price">
+                                    <del class="price old-price">@item.OldPrice</del>
+                                    <span class="price actual-price">@item.Price</span>
+                                </div>
+                                <div class="item-star">
+                                    <a title="@(item.Score)分">
+                                        <span class="icon-stat @Html.ScoreToStar(item.Score)"></span>
+                                    </a>
+                                    <span class="item-comments" style="display:none;"></span>
+                                </div>
+                                <div class="item-actions">
+                                    <a class="btn btn-small btn-primary J_addCart" href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })">
+                                        <i class="iconfont font12 wcolor">&#xe620;</i>
+                                        立即购买
+                                    </a>
+                                    <a class="btn btn-dake btn-small J_addFav del_goods_from_wishlist" href="javascript:void(0)" data-pid="@(item.Id)">取消</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+}
+                </ul>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('.del_goods_from_wishlist').click(function () {
+            $('#removeCheckbox' + $(this).attr('data-pid')).attr("checked", true);
+            $('#updatecartSubmit').click();
+        });
+    });
+    </script>
+            @*<div class="shop-cart-box-bd">
+                    <!--  购物车商品列表 -->
+                    <dl class="shop-cart-goods">
+                        <dt class="clearfix">
+                            <span class="col col-1">商品</span>
+                            <span class="col col-2">单价</span>
+                            <span class="col col-3">数量</span>
+                            <span class="col col-4">小计</span>
+                            <span class="col col-5">操作</span>
+                        </dt>
+
+                        @foreach (var item in Model.Items)
+                        {
+                            <dd class="item  clearfix J_proItem" data-cos="0">
+                                <input type="checkbox" id="removeCheckbox@(item.Id)" name="removefromcart" value="@(item.Id)" style="display:none;" />
+                                <div class="item-row">
+                                    <div class="col col-1">
+                                        <div class="g-pic">
+                                            <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" target="_blank">
+                                                <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" srcset="@item.Picture.ImageUrl" title="@item.Picture.Title" width="120" height="120" />
+                                            </a>
+
+                                        </div>
+                                        <div class="g-info">
+                                            <div class="g-name">
+
+                                                <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" target="_blank">
+                                                    @item.ProductName
+                                                </a>
+                                            </div>
+                                            <p class="g-type">
+                                                @if (!String.IsNullOrEmpty(item.AttributeInfo))
+                                                {
+                                                    <span>
+                                                        @Html.Raw(item.AttributeInfo)
+                                                    </span>
+                                                }
+                                                @if (!String.IsNullOrEmpty(item.RecurringInfo))
+                                                {
+                                                    <span>
+                                                        @Html.Raw(item.RecurringInfo)
+                                                    </span>
+                                                }
+                                                @if (item.Warnings.Count > 0)
+                                                {
+                                                    for (int i = 0; i < item.Warnings.Count; i++)
+                                                    {
+                                                        <span>@item.Warnings[i]</span>
+                                                    }
+                                                }
+                                            </p>
+                                            <p class='g-other-info'>
+                                                <!--【包邮】购买此商品享全单免费送货-->
+                                            </p>
+                                            <!--S 套装描述-->
+                                            <!--E 套装描述-->
+                                            <!--S 明星产品配置-->
+                                            <!--E 明星产品配置-->
+                                        </div>
+                                    </div>
+                                    <div class="col col-2">
+                                        @item.UnitPrice
+                                    </div>
+                                    <div class="col col-3">
+                                        @if (Model.IsEditable)
+                                        {
+                                            if (item.AllowedQuantities.Count > 0)
+                                            {
+                                                <select name="itemquantity@(item.Id)" class="qty-dropdown">
+                                                    @foreach (var qty in item.AllowedQuantities)
+                                                    {
+                                                        <option selected="@qty.Selected" value="@qty.Value">@qty.Value</option>
+                                                    }
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <div class="change-goods-num clearfix J_changeGoodsNum">
+                                                    <a href="javascript:void(0)" data-pid="@(item.Id)" class="J_minus">
+                                                        <i class="iconfont">&#xf0176;</i>
+                                                    </a>
+                                                    <input id="itemquantity@(item.Id)" name="itemquantity@(item.Id)" type="text" value="@(item.Quantity)" data-num="1" data-buylimit="10" autocomplete="off" class="goods-num J_goodsNum">
+                                                    <a href="javascript:void(0)" data-pid="@(item.Id)" class="J_plus">
+                                                        <i class="iconfont">&#xf0175;</i>
+                                                    </a>
+                                                </div>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <span>@item.Quantity</span>
+                                        }
+
+                                    </div>
+                                    <div class="col col-4">
+                                        <em>@item.SubTotal</em>
+                                        <p>
+                                            @if (!String.IsNullOrEmpty(item.Discount))
+                                            {
+                                                @item.Discount
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="col col-5">
+                                        <a href="javascript:void(0)" data-pid="@(item.Id)" title="删除" class="del J_delGoods"><i class="iconfont">&#xf00b3;</i></a>
+                                    </div>
+                                </div>
+                            </dd>
+                        }
+                    </dl>
+
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('.J_delGoods').click(function () {
+                                $('#removeCheckbox' + $(this).attr('data-pid')).attr("checked", true);
+                                $('#updatecartSubmit').click();
+                            });
+                            $('.J_minus').click(function () {
+                                var qInput = $('#itemquantity' + $(this).attr('data-pid'));
+                                qInput.val(qInput.val() * 1 - 1);
+                                $('#updatecartSubmit').click();
+                            });
+                            $('.J_plus').click(function () {
+                                var qInput = $('#itemquantity' + $(this).attr('data-pid'));
+                                qInput.val(qInput.val() * 1 + 1);
+                                $('#updatecartSubmit').click();
+                            });
+                        });
+                    </script>
+
+                </div>*@
+            }
+            }
+            else
+            {
+            @*@T("Wishlist.CartIsEmpty")*@
+                <div class="uc-tip-section">
+                    <p>您暂未收藏任何商品。</p>
+                </div>
+            }</div>
+</div>

@@ -1,0 +1,30 @@
+﻿@model ProductQuestionModel
+@Html.HiddenFor(model => model.Id)
+<table class="adminContent">
+  
+    <tr>
+        <td class="adminTitle">
+           问题:
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Title)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            回复:
+        </td>
+        <td class="adminData">
+            @Html.TextAreaFor(model => model.QuestionText, new { style = "Width: 500px; Height: 150px;" })
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+           顺序:
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.OrderNum)
+        </td>
+    </tr>
+    
+</table>

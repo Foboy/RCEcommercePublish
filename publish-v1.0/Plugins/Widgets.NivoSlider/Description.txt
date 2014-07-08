@@ -1,0 +1,8 @@
+﻿Group: Widgets
+FriendlyName: 首页广告位
+SystemName: Widgets.NivoSlider
+Version: 1.14
+SupportedVersions: 3.30
+Author: foby
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.NivoSlider.dll

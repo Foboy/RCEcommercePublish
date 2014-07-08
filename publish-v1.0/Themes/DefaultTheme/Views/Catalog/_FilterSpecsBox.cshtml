@@ -1,0 +1,49 @@
+﻿@model CatalogPagingFilteringModel.SpecificationFilterModel
+@using Nop.Web.Models.Catalog;
+@{
+    var notFilteredItemsGroups = Model.NotFilteredItems.GroupBy(x => x.SpecificationAttributeName);
+   
+}
+@if (Model.Enabled)
+{
+    if (Model.NotFilteredItems.Count > 0)
+    {
+        foreach (var group in notFilteredItemsGroups)
+        {
+            var groupList = group.ToList();
+            <dl class="xm-filter-list  category-filter-list clearfix">
+                <dt>@groupList[0].SpecificationAttributeName ：</dt>
+                <dd>
+                    <ul id="typeAdapt" class="clearfix">
+                        @foreach (var spec in groupList)
+                        {
+                            <li>
+                                <a href="@spec.FilterUrl">@spec.SpecificationAttributeOptionName</a>
+                            </li>
+                        }
+                    </ul>
+                </dd>
+            </dl>
+        }
+    }
+    if (Model.AlreadyFilteredItems.Count > 0)
+    {
+        <dl class="xm-filter-list  category-filter-list clearfix">
+            <dt class="condition-title">已选条件：</dt>
+            <dd>
+                <ul class="clearfix">
+                    @foreach (var item in Model.AlreadyFilteredItems)
+                    {
+                        <li class="condition">
+                            <strong>@(item.SpecificationAttributeName)：</strong>@item.SpecificationAttributeOptionName
+                            <a href=""><i class="iconfont">&#xf00b3;</i></a>
+                        </li>
+                    }
+                    <li class="condition">
+                        <a href="@Model.RemoveFilterUrl">全部移除</a>
+                    </li>
+                </ul>
+            </dd>
+        </dl>
+    }
+}

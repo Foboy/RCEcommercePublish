@@ -1,0 +1,145 @@
+﻿@model OnePageCheckoutModel
+@using Nop.Web.Models.Checkout;
+@using Nop.Core.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+
+    Html.AddScriptParts("~/Themes/DefaultTheme/Content/js/public.onepagecheckout.js");
+
+    Html.AppendCssFileParts("~/Themes/DefaultTheme/Content/css/checkout.css");
+
+    var storeLocation = EngineContext.Current.Resolve<Nop.Core.IWebHelper>().GetStoreLocation();
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+}
+@{
+    //step numbers
+    int billingAddressStepNumber = 1;
+    int shippingAddressStepNumber = 2;
+    int shippingMethodStepNumber = 3;
+    int paymentMethodStepNumber = 4;
+    int paymentInfoStepNumber = 5;
+    int confirmOrderStepNumber = 6;
+    if (!Model.ShippingRequired)
+    {
+        paymentMethodStepNumber = paymentMethodStepNumber - 2;
+        paymentInfoStepNumber = paymentInfoStepNumber - 2;
+        confirmOrderStepNumber = confirmOrderStepNumber - 2;
+    }
+    if (Model.DisableBillingAddressCheckoutStep)
+    {
+        shippingAddressStepNumber--;
+        shippingMethodStepNumber--;
+        paymentMethodStepNumber--;
+        paymentInfoStepNumber--;
+        confirmOrderStepNumber--;
+    }
+}
+<div class="checkout-box">
+    <div class="checkout-box-bd" id="checkout-steps">
+        @if (Model.ShippingRequired)
+        {
+            <div class="xm-box">
+                <div class="box-hd ">
+                    <h2 class="title">收货地址</h2>
+                </div>
+                <div class="box-bd">
+                    <form action="" id="co-shipping-form">
+                        <div id="checkout-shipping-load">
+                            @Html.Action("OpcShippingForm", "Checkout")
+                            @*shipping address content will be loaded here*@
+                        </div>
+                        @*选择地址样式*@
+
+                    </form>
+                    <script type="text/javascript">
+                        Shipping.init('#co-shipping-form', '@(storeLocation)checkout/OpcSaveShipping/');
+                    </script>
+                    <div class="buttons" id="shipping-buttons-container" style="display:none;">
+                        <br />
+                        <input type="button" class="btn btn-lineDakeLight btn-small" onclick="Shipping.cancel(); return false;" value="取消" />
+                        <input type="button" class="btn btn-primary btn-small" onclick="Shipping.save(); return false;" value="确定" />
+                        <span id="shipping-please-wait" class="please-wait" style="display: none;"> 正在保存...</span>
+                    </div>
+                </div>
+            </div>
+    <div class="xm-box">
+        <div class="box-hd ">
+            <h2 class="title">配送方式</h2>
+        </div>
+        <div class="box-bd">
+            <form id="co-shipping-method-form" action="">
+                <div id="checkout-shipping-method-load">
+                    @Html.Action("OpcShippingMethodForm", "Checkout")
+                    @*shipping methods content will be loaded here*@
+                </div>
+
+
+                <script type="text/javascript">
+                    ShippingMethod.init('#co-shipping-method-form', '@(storeLocation)checkout/OpcSaveShippingMethod/');
+                </script>
+            </form>
+        </div>
+    </div>
+        }
+        <div class="xm-box">
+            <div class="box-hd ">
+                <h2 class="title">支付方式</h2>
+                <!---->
+            </div>
+            <div class="box-bd">
+                <form action="" id="co-payment-method-form">
+                    <div id="checkout-payment-method-load">
+                        @Html.Action("OpcPaymentMethodForm", "Checkout")
+                        @*payment methods content will be loaded here*@
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    PaymentMethod.init('#co-payment-method-form', '@(storeLocation)checkout/OpcSavePaymentMethod/');
+                </script>
+            </div>
+        </div>
+        <div class="xm-box">
+            <div class="box-hd ">
+                <h2 class="title">支付信息</h2>
+                <!---->
+            </div>
+            <div class="box-bd">
+                <form action="" id="co-payment-info-form">
+                    <div id="checkout-payment-info-load">
+                        @Html.Action("OpcPaymentInfoForm", "Checkout")
+                        @*payment info content will be loaded here*@
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    PaymentInfo.init('#co-payment-info-form', '@(storeLocation)checkout/OpcSavePaymentInfo/');
+                </script>
+            </div>
+        </div>
+        <div class="xm-box">
+            <div class="box-hd ">
+                <h2 class="title">订单确认</h2>
+                <!---->
+            </div>
+            <div class="box-bd">
+                <div id="checkout-confirm-order-load">
+                    @Html.Action("OpcConfirmOrderForm", "Checkout")
+                    @*confirm order content will be loaded here*@
+                </div>
+
+                @*订单确认样式*@
+
+                   <script type="text/javascript">
+                       ConfirmOrder.init('@(storeLocation)checkout/OpcConfirmOrder/', '@(storeLocation)checkout/completed/');
+                   </script>
+
+                @*结算确认样式*@
+
+    </div>
+</div>
+</div>
+</div>
+    <script type="text/javascript">
+        Checkout.init('@(storeLocation)cart/');
+    </script>

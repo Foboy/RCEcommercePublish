@@ -1,0 +1,341 @@
+﻿@model RegisterModel
+@using Nop.Web.Models.Customer;
+@using Webdiyer.WebControls.Mvc;
+@{
+    //title
+    //Html.AddTitleParts(T("PageTitle.Register").Text);
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>瑞翠华光帐户 - 注册</title>
+    <link href="~/Themes/DefaultTheme/Content/css/register.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c64922fe907004774c797344b7063851";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    <script>
+        ; (function () {
+            var _locale = "zh_CN";
+            var conf = {
+                "zh_cn": { data: ['zh_cn', 'cn', 'zh'], rule: 'cn' },
+                "zh_tw": { data: ['zh_tw', 'tw', 'zh_hk', 'hk'], rule: 'tw|hk' },
+                "en": { data: ['en', "en_us"], rule: 'en' },
+                "default": 'zh_cn'
+            }
+            window.locale = (function () {
+                var res = {
+                    result: '',
+                    cls: '',
+                    exact: 0
+                }
+                var tmp, i, n, p, data, reg;
+                if (_locale != "") {
+                    _locale = _locale.replace(/^\s+/, "").replace(/\s+$/, "").toLowerCase();
+                    for (p in conf) {
+                        if (res.exact !== 1) {
+                            tmp = conf[p];
+                            tmp.data && (data = tmp.data);
+                            /*精确匹配*/
+                            for (i = 0; n = data[i++];) {
+                                if (n === _locale) {
+                                    res.result = _locale;
+                                    res.cls = p;
+                                    res.exact = 1;
+                                    break;
+                                }
+                            }
+                            /*规则匹配*/
+                            if (res.exact !== 1 && tmp.rule) {
+                                reg = new RegExp(tmp.rule);
+                                if (reg.test(_locale)) {
+                                    res.result = _locale;
+                                    res.cls = p;
+                                    res.exact = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!res.result) {
+                    res.result = res.cls = conf["default"];
+                    res.exact = 404;
+                }
+                return res;
+            })();
+            var domReadyStat = 0;
+            var domReadyFn = [];
+            function execDomReadyFn() {
+                var fn;
+                while (fn = domReadyFn.shift()) {
+                    if (typeof fn == 'function') {
+                        fn();
+                    }
+                }
+            }
+            function addReadyFn(fn) {
+                if (domReadyStat) {
+                    fn();
+                } else {
+                    domReadyFn.push(fn);
+                }
+            }
+            function fireDomReady() {
+                domReadyStat = 1;
+                execDomReadyFn();
+            }
+            window.domReady = function (fn) {
+                addReadyFn(fn);
+            }
+            /*绑定DOMReady*/
+            if (document.addEventListener) {
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+                    fireDomReady();
+                }, false);
+            } else {
+                if (document.getElementById) {
+                    document.write("<script id=\"ie-domReady\" defer='defer' src=\"//:\"><\/script>");
+                    document.getElementById("ie-domReady").onreadystatechange = function () {
+                        if (this.readyState === "complete") {
+                            fireDomReady();
+                            this.onreadystatechange = null;
+                            this.parentNode.removeChild(this)
+                        }
+                    };
+                }
+            }
+            window.domReady(function () {
+                document.body.className += " " + window.locale.cls;
+            });
+        })();
+    </script>
+    <style>
+        .en .sub_login, .en .sub_login input {
+            width: auto;
+            padding: 0 3px;
+        }
+
+        #fvmask {
+            clear: both;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+            z-index: 1000;
+            display: none;
+        }
+
+            #fvmask .prompt {
+                font-size: 16px;
+                font-weight: bold;
+                color: #676767;
+            }
+
+            #fvmask .mask_bg {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: #888;
+                filter: alpha(opacity=80);
+                -moz-opacity: 0.8;
+                opacity: 0.8;
+            }
+
+            #fvmask .main_panel {
+                padding: 20px;
+                width: 480px;
+                left: 50%;
+                margin-left: -260px;
+                position: absolute;
+                top: 50%;
+                background: none repeat scroll 0% 0% rgb(255, 255, 255);
+                height: 320px;
+                margin-top: -180px;
+            }
+
+                #fvmask .main_panel .hr {
+                    background-color: #c8c8c8;
+                    height: 3px;
+                }
+
+                #fvmask .main_panel .img_wrapper {
+                    top: 80px;
+                }
+
+                #fvmask .main_panel .t2_input {
+                    top: 185px;
+                }
+
+                #fvmask .main_panel img {
+                    float: none;
+                    margin: 0px;
+                    vertical-align: baseline;
+                }
+
+                #fvmask .main_panel .recode_tip {
+                    padding: 10px;
+                }
+                /*
+        #fvmask .main_panel .close{
+            position:absolute;right:10px;top:10px;width:20px;height:20px;cursor:pointer;
+        }
+        */
+                #fvmask .main_panel .mid {
+                    position: absolute;
+                    width: 200px;
+                    left: 160px;
+                    display: block;
+                }
+
+                    #fvmask .main_panel .mid input, #fvmask .main_panel .mid img {
+                        display: block;
+                        width: 100%;
+                    }
+
+                    #fvmask .main_panel .mid img {
+                        height: 85px;
+                    }
+
+                #fvmask .main_panel #ticket2 {
+                    font-size: 12px;
+                    padding-left: 2px;
+                    padding-right: 2px;
+                    top: 60px;
+                    width: 192px;
+                }
+
+                    #fvmask .main_panel #ticket2::-webkit-input-placeholder, #fvmask .main_panel #ticket2:-moz-placeholder, #fvmask .main_panel #ticket2:placeholder {
+                        color: #d8d8d8;
+                    }
+
+                #fvmask .main_panel .img_reload {
+                    cursor: pointer;
+                    text-decoration: underline;
+                    width: 45px;
+                    height: 30px;
+                    font-size: 14px;
+                    top: 100px;
+                    left: 370px;
+                    position: absolute;
+                    color: #9f9f9f;
+                }
+                /*
+        #fvmask .main_panel .placeholder{
+            color: #d8d8d8;
+            top: 10px;
+            position: absolute;
+            left:10px;
+            font-size:12px;
+            width: 210px;
+        }
+        */
+                #fvmask .main_panel .smt_wrapper {
+                    font-size: 20px;
+                    font-weight: bold;
+                    height: 36px;
+                    top: 270px;
+                }
+
+                    #fvmask .main_panel .smt_wrapper input {
+                        color: #9b9b9b;
+                    }
+        /*From base.css -- consider importing it*/
+        .modal-header {
+            border-bottom: 1px solid #DDDDDD;
+            height: 38px;
+            margin: 0 30px;
+            padding-top: 2px;
+            position: relative;
+        }
+
+            .modal-header .close {
+                background-color: #8C8C8C;
+                cursor: pointer;
+                display: block;
+                height: 40px;
+                line-height: 40px;
+                position: absolute;
+                right: -40px;
+                text-align: center;
+                top: -10px;
+                width: 40px;
+            }
+
+            .modal-header h3 {
+                color: #333333;
+                font-size: 18px;
+                line-height: 38px;
+                margin: 0;
+            }
+
+            .modal-header .close {
+                background: url(https://land.xiaomi.net/res/fc4605c/image/img/passport/close.png) no-repeat;
+            }
+
+        .fail .empty_tip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="logo">
+            <a href="/">
+                <img src="~/Themes/DefaultTheme/Content/Images/logo.jpg" alt="瑞翠华光logo" />
+            </a>
+        </div>
+    </div>
+    <div class="suc_content reg-account nojsp">
+        <div class="suc_kuang">
+            <div class="hei_513">
+                <h4 class="h4_suc textM">注册帐户</h4>
+                <p class="suc_p"></p>
+                <div class="radio_quyu">
+
+                </div>
+                @using (Html.BeginForm())
+                {
+                    <div class="page registration-page">
+
+                        <div class="page-body">
+                            <div class="message-error">
+                                @Html.ValidationSummary(true)
+                            </div>
+                            @Html.Partial("_ExternalAuthentication.AssociateMessage")
+                            <dl class="login-dl clearfix">
+                                <dt class="dt_l">邮箱：</dt>
+                                <dd class="dd_r clearfix">
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "input_kuang val_m item errortip address ", placeholder = "邮箱" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "errormessage " })
+                                </dd>
+                                <dd class="dd_r la_height clearfix">
+                                    <div class="sub_login flt_l"><input type="submit" name="register-button" class="no_bg" value="立即注册" /></div>
+                                </dd>
+                            </dl>
+                            <p class="p_cor_hui">点击“立即注册”，即表示您同意并愿意遵守瑞翠华光<a href="javascipt:void(0)" class="cor_yellow">用户协议</a>和<a href="#" class="cor_yellow">隐私政策</a></p>
+                        </div>
+                        <div class="suc_botm"></div><!--这部分是卷角效果-->
+                    </div>
+                }
+            </div>
+            <div class="footer" style="width:auto;">
+                <ul class="links">
+                    <li class="copyright"><span>版权所有 © 2014 瑞翠商城 保留所有权利</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

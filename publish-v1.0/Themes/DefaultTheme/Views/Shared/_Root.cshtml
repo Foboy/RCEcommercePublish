@@ -1,0 +1,305 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+    var _workContext = EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+    var currentCustomerRoles = _workContext.CurrentCustomer.CustomerRoles.Where(cr => cr.Active);
+    bool check = false;
+    bool IsLogin = false;
+    foreach (var role in currentCustomerRoles)
+    {
+        if (role.Name == "VIP")
+        {
+            check = true;
+        }
+        if (role.Name == "已注册客户")
+        {
+            IsLogin = true;
+        }
+    }
+}
+@Html.Widget("body_start_html_tag_after")
+@Html.Partial("_Notifications")
+@Html.Action("AdminHeaderLinks", "Common")
+@using Nop.Core.Infrastructure;
+
+
+<div class="site-topbar">
+    <div class="container">
+        <div class="topbar-nav">
+            <a class="current sc-a" href="@Url.RouteUrl("HomePage")">瑞翠华光</a>
+            <a class="sc-a" href="javascript:void(0)" onclick="AddFavorite('瑞翠华光', 'http://www.rc1314.com/')">收藏本站</a>
+            <a class="sc-a" href="javascript:void(0)" onclick="SetHome(this, 'http://www.rc1314.com/');">设为首页</a>
+        </div>
+        <div class="topbar-info J_userInfo">
+            @Html.Action("HeaderLinks", "Common")
+        </div>
+    </div>
+</div>
+<!-- .site-topbar END -->
+
+<div class="site-header container" id="rootHeaderContainer">
+    <div class="site-logo">
+        <a class="logo" href="@Url.RouteUrl("HomePage")" title="瑞翠华光"><i class="iconfont">&#xe61d;</i></a>
+    </div>
+    <div class="header-info">
+        <div class="search-section">
+            @Html.Action("SearchBox", "Catalog")
+        </div>
+        <div class="cart-section" id="flyout-cart">
+            @Html.Action("FlyoutShoppingCart", "ShoppingCart")
+        </div>
+    </div>
+    <div class="header-nav clearfix" id="rootNavBar">
+        <div id="J_categoryContainer" class="nav-category">
+            <a class="btn-category-list" href="@Url.RouteUrl("HomePage")">全部商品分类</a>
+            <div class="nav-category-section" style="display: none;" id="navCategorySection">
+                <ul class="nav-category-list clearfix">
+                    @Html.Action("TopSpecsMenu", "Catalog")
+                </ul>
+            </div>
+        </div>
+        <div class="nav-main">
+            <ul class="nav-main-list J_menuNavMain clearfix">
+                <li class="nav-main-item current">
+                    <a href="@Url.RouteUrl("HomePage")"><span class="text">首页</span></a>
+                </li>
+                <li id="nav_lastproduct" class="nav-main-item">
+                    <a href="@Url.RouteUrl("LastProduct")"><span class="text">每日新品</span><span class="arrow"></span></a>
+                </li>
+                <li class="nav-main-item">
+                    <a href="@Url.RouteUrl("TuiJianProduct")"><span class="text">超值推荐</span><span class="arrow"></span></a>
+                </li>
+                <li class="nav-main-item">
+                    <a href="#"><span class="text">精品典藏</span><span class="arrow"></span></a>
+                </li>
+                <li id="nav_vip" class="nav-main-item">
+                    @if (!IsLogin)
+                    {
+                        <a href="@Url.RouteUrl("Login")" target="_blank"><span class="text">VIP专区</span><span class="arrow"></span></a>
+
+                    }
+                    else if (check)
+                    {
+                        <a href="@Url.RouteUrl("VipProduct")" target="_blank"><span class="text">VIP专区</span><span class="arrow"></span></a>
+                    }
+                    else
+                    {
+                        <a href="#not_vip_msg" target="_blank" class="poplink"><span class="text">VIP专区</span><span class="arrow"></span></a>
+                    }
+
+
+                </li>
+                <li class="nav-main-item">
+                    <a href="#"><span class="text">购物无忧</span><span class="arrow"></span></a>
+                </li>
+                <li class="nav-main-item">
+                    <a href="@Url.RouteUrl("SoldProduct")"><span class="text">已售欣赏</span><span class="arrow"></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(window).scroll(function () {
+        var a = $(this).scrollTop(),
+        b = $("#rootHeaderContainer").offset().top + 110;
+        var c = b - a;
+        if (a > b)
+        {
+            $("#rootNavBar").addClass("root-nav-bar-play");
+            $("#navCategorySection").addClass("root-nav-section-list-home");
+            if (isCategoryToggled) {
+                $("#navCategorySection").css({ top: c });
+            }
+        }
+        else
+        {
+            $("#rootNavBar").removeClass("root-nav-bar-play");
+            $("#navCategorySection").removeClass("root-nav-section-list-home");
+            if (isCategoryToggled) {
+                $("#navCategorySection").css({ top: 50 });
+            }
+        }
+    })
+</script>
+<!-- .site-header END -->
+<div class="container">
+    @RenderBody()
+</div>
+<div class="site-footer">
+    <div class="container">
+        <div class="footer-service">
+            <ul class="list-service clearfix">
+                <li>
+                    <a href="" target="_blank">
+                        <i class="iconfont">&#xf02b5;</i>
+                        <strong>品质保证</strong>
+                        <span>品质护航，购物无忧</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" target="_blank">
+                        <i class="iconfont">&#xf029f;</i>
+                        <strong>7天无理由退货</strong>
+                        <span>收到商品7天内无理由退货服务</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" target="_blank">
+                        <i class="iconfont">&#xf0297;</i>
+                        <strong>15天免费换货</strong>
+                        <span>质量问题免费换新货承诺</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" target="_blank">
+                        <i class="iconfont">&#xf02b8;</i>
+                        <strong>100%</strong>
+                        <span>正品保证</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" target="_blank">
+                        <i class="iconfont">&#xf02a4;</i>
+                        <strong>超千万用户</strong>
+                        <span>口碑信赖</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        @Html.Action("Footer", "Common")
+    </div>
+</div>
+<!-- .site-footer END -->
+
+<div class="master-wrapper-page">
+    @Html.Action("JavaScriptDisabledWarning", "Common")
+    <div class="master-wrapper-content">
+        <script type="text/javascript">
+            AjaxCart.init(false, '#J_miniCart .J_cartNum', '#wishlist-qty', '#J_miniCartList');
+        </script>
+        @Html.Partial("Header")
+
+        @Html.Widget("content_before")
+        @*ajax loading window*@
+        <div class="ajax-loading-block-window" style="display: none">
+            <div class="loading-image">
+            </div>
+        </div>
+        <div class="master-wrapper-main">
+            
+        </div>
+        @Html.Widget("content_after")
+    </div>
+    
+</div>
+@Html.Action("EuCookieLaw", "Common")
+@Html.Widget("body_end_html_tag_before")
+
+
+<div style="display:none;">
+    <div id='not_vip_msg' style='padding:30px;  background:#fff;'>
+        <h3 class="msg-header">温馨提示</h3>
+        <div class="msg-body">VIP专区目前只对VIP用户开放。你可以在线咨询客服，了解VIP申请方式</div>
+    </div>
+</div>
+
+@*固定导航*@
+<div class="fixednav">
+    <ul class="fixedBoxList">
+        <li class="Service">
+            <span class="fixeBoxSpan"><i class="iconfont font20 qqcolor">&#xf01c7;</i></span>
+            <strong class="fixed-title">在线客服</strong>
+            <div class="qq-service">
+                <div class="bjfff"></div>
+                <span>在线QQ客服</span>
+                <span style="font-size: 12px; color: #8c8c8c" class="qq-time ">AM:09:00—PM：23:00</span>
+                <div class="qq-info clearfix">
+                    <div class="float-left">客服一：</div>
+                    <div class="float-right ">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=3020819731&site=www.rc1314.com&menu=yes">
+                            <img border="0" src="http://wpa.qq.com/pa?p=2:3020819731:41" alt="点击这里给我发消息" title="点击这里给我发消息" />
+                        </a>
+                    </div>
+                </div>
+                <div class="qq-info clearfix">
+                    <div class="float-left">客服二：</div>
+                    <div class="float-right ">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2112836384&site=www.rc1314.com&menu=yes">
+                            <img border="0" src="http://wpa.qq.com/pa?p=2:2112836384:51" alt="点击这里给我发消息" title="点击这里给我发消息" />
+                        </a>
+                    </div>
+                </div>
+                <div class="qq-info clearfix">
+                    <div class="float-left">客服三：</div>
+                    <div class="float-right ">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=205140960&site=www.rc1314.com&menu=yes">
+                            <img border="0" src="http://wpa.qq.com/pa?p=2:205140960:41" alt="点击这里给我发消息" title="点击这里给我发消息" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li onclick="window.scrollTo(0,0);return false">
+            <span class="fixeBoxSpan"><i class="iconfont font24 hcolor">&#xf02aa;</i></span>
+            <strong class="fixed-title">回到顶部</strong>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        jQuery(".Service").hover(
+            function () {
+                jQuery(this).find('span.fixeBoxSpan').addClass("hover");
+                jQuery(this).addClass("hover");
+            },
+            function () {
+                jQuery(this).find('span.fixeBoxSpan').removeClass("hover");
+                jQuery(this).removeClass("hover");
+            }
+            );
+    });
+
+</script>
+
+<script type="text/javascript">
+    //设为首页
+    function SetHome(obj, url) {
+        try {
+            obj.style.behavior = 'url(#default#homepage)';
+            obj.setHomePage(url);
+        } catch (e) {
+            if (window.netscape) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                } catch (e) {
+                    alert("抱歉，此操作被浏览器拒绝！\n\n请在浏览器地址栏输入'about:config'并回车然后将[signed.applets.codebase_principal_support]设置为'true'");
+                }
+            } else {
+                alert("抱歉，您所使用的浏览器无法完成此操作。\n\n您需要手动将【" + url + "】设置为首页。");
+            }
+        }
+    }
+
+    //收藏本站
+    function AddFavorite(title, url) {
+        try {
+            window.external.addFavorite(url, title);
+        }
+        catch (e) {
+            try {
+                window.sidebar.addPanel(title, url, "");
+            }
+            catch (e) {
+                alert("抱歉，您所使用的浏览器无法完成此操作。\n\n加入收藏失败，请使用Ctrl+D进行添加");
+            }
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".poplink").colorbox({ inline: true, width: "50%", opacity: 0.2, close: "<i class='iconfont font12 wcolor'>&#xf00b3;</i>" });
+    });
+</script>

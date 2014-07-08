@@ -1,0 +1,77 @@
+﻿@model ProductModel
+@{
+    //page title
+    ViewBag.Title = T("Admin.Catalog.Products.EditProductDetails").Text;
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("Admin.Catalog.Products.EditProductDetails") - @Model.Name @Html.ActionLink(T("Admin.Catalog.Products.BackToList").Text, "List", new { area = "" }, new { @class = "btn btn-sm btn-primary btn-flat " })
+        </div>
+
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+@Html.DeleteConfirmation("product-delete")
+
+@*copy product form*@
+
+
+<div id="copyproduct-window" style="display:none;">
+    @using (Html.BeginForm("CopyProduct", "Product"))
+    {
+        @Html.HiddenFor(model => model.CopyProductModel.Id)
+        <table style="text-align: left;">
+            <tr>
+                <td>
+                    @Html.NopLabelFor(model => model.CopyProductModel.Name):
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.CopyProductModel.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.NopLabelFor(model => model.CopyProductModel.Published):
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.CopyProductModel.Published)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.NopLabelFor(model => model.CopyProductModel.CopyImages):
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.CopyProductModel.CopyImages)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" class="btn btn-sm btn-primary btn-flat " value="@T("Admin.Catalog.Products.Copy")" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#copyproduct").click(function (e) {
+            e.preventDefault();
+            var window = $("#copyproduct-window");
+            if (!window.data("kendoWindow")) {
+                window.kendoWindow({
+                    modal: true,
+                    width: "400px",
+                    title: "@T("Admin.Catalog.Products.Copy")",
+                    actions: ["Close"]
+                });
+            }
+            window.data('kendoWindow').center().open();
+        });
+        kendo.culture("zh-CHS");
+    });
+</script>

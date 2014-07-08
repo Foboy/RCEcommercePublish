@@ -1,0 +1,24 @@
+﻿@model ProductModel
+
+@if (Model.AvailableDiscounts != null && Model.AvailableDiscounts.Count > 0)
+{
+    foreach (var discount in Model.AvailableDiscounts)
+    {
+    <input type="checkbox" name="SelectedDiscountIds" value="@discount.Id"
+            @if (Model.SelectedDiscountIds != null && Model.SelectedDiscountIds.Contains(discount.Id))
+            {
+                <text>checked="checked"</text>
+            }
+            />@discount.Name
+    <br />
+    }
+}
+else
+{
+    @T("Admin.Catalog.Products.Discounts.NoDiscounts")
+}
+@*<tr>
+    <td class="adminData">
+        <input type="submit" name="save-continue" class="btn btn-sm btn-primary btn-flat " value="保存并进行一步" />
+    </td>
+</tr>*@

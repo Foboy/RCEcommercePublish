@@ -1,0 +1,9 @@
+﻿@model ShoppingCartModel.OrderReviewDataModel
+@using Nop.Web.Models.ShoppingCart;
+@if (Model.Display)
+{
+    <div id="submitAddress" style="margin-bottom: 20px;">
+        <p>@Model.ShippingAddress.CountryName @Model.ShippingAddress.StateProvinceName @Model.ShippingAddress.City @Model.ShippingAddress.Address1</p>
+        <p>@Model.ShippingAddress.FirstName @Model.ShippingAddress.PhoneNumber</p>
+    </div>
+}

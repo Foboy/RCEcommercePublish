@@ -1,0 +1,892 @@
+﻿@model RegisterModel
+@using Nop.Web.Models.Customer;
+@using Webdiyer.WebControls.Mvc;
+@{
+    //title
+    Html.AddTitleParts(T("PageTitle.Register").Text);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>瑞翠华光帐户 - 注册</title>
+    <link href="~/Themes/DefaultTheme/Content/css/register.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#_mvcCaptchaGuid").next().next().hide();
+        })
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c64922fe907004774c797344b7063851";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    <script>
+        ; (function () {
+            var _locale = "zh_CN";
+            var conf = {
+                "zh_cn": { data: ['zh_cn', 'cn', 'zh'], rule: 'cn' },
+                "zh_tw": { data: ['zh_tw', 'tw', 'zh_hk', 'hk'], rule: 'tw|hk' },
+                "en": { data: ['en', "en_us"], rule: 'en' },
+                "default": 'zh_cn'
+            }
+            window.locale = (function () {
+                var res = {
+                    result: '',
+                    cls: '',
+                    exact: 0
+                }
+                var tmp, i, n, p, data, reg;
+                if (_locale != "") {
+                    _locale = _locale.replace(/^\s+/, "").replace(/\s+$/, "").toLowerCase();
+                    for (p in conf) {
+                        if (res.exact !== 1) {
+                            tmp = conf[p];
+                            tmp.data && (data = tmp.data);
+                            /*精确匹配*/
+                            for (i = 0; n = data[i++];) {
+                                if (n === _locale) {
+                                    res.result = _locale;
+                                    res.cls = p;
+                                    res.exact = 1;
+                                    break;
+                                }
+                            }
+                            /*规则匹配*/
+                            if (res.exact !== 1 && tmp.rule) {
+                                reg = new RegExp(tmp.rule);
+                                if (reg.test(_locale)) {
+                                    res.result = _locale;
+                                    res.cls = p;
+                                    res.exact = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!res.result) {
+                    res.result = res.cls = conf["default"];
+                    res.exact = 404;
+                }
+                return res;
+            })();
+            var domReadyStat = 0;
+            var domReadyFn = [];
+            function execDomReadyFn() {
+                var fn;
+                while (fn = domReadyFn.shift()) {
+                    if (typeof fn == 'function') {
+                        fn();
+                    }
+                }
+            }
+            function addReadyFn(fn) {
+                if (domReadyStat) {
+                    fn();
+                } else {
+                    domReadyFn.push(fn);
+                }
+            }
+            function fireDomReady() {
+                domReadyStat = 1;
+                execDomReadyFn();
+            }
+            window.domReady = function (fn) {
+                addReadyFn(fn);
+            }
+            /*绑定DOMReady*/
+            if (document.addEventListener) {
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+                    fireDomReady();
+                }, false);
+            } else {
+                if (document.getElementById) {
+                    document.write("<script id=\"ie-domReady\" defer='defer' src=\"//:\"><\/script>");
+                    document.getElementById("ie-domReady").onreadystatechange = function () {
+                        if (this.readyState === "complete") {
+                            fireDomReady();
+                            this.onreadystatechange = null;
+                            this.parentNode.removeChild(this)
+                        }
+                    };
+                }
+            }
+            window.domReady(function () {
+                document.body.className += " " + window.locale.cls;
+            });
+        })();
+    </script>
+    <style>
+        .en .sub_login, .en .sub_login input {
+            width: auto;
+            padding: 0 3px;
+        }
+
+        #fvmask {
+            clear: both;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0px;
+            top: 0px;
+            z-index: 1000;
+            display: none;
+        }
+
+            #fvmask .prompt {
+                font-size: 16px;
+                font-weight: bold;
+                color: #676767;
+            }
+
+            #fvmask .mask_bg {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: #888;
+                filter: alpha(opacity=80);
+                -moz-opacity: 0.8;
+                opacity: 0.8;
+            }
+
+            #fvmask .main_panel {
+                padding: 20px;
+                width: 480px;
+                left: 50%;
+                margin-left: -260px;
+                position: absolute;
+                top: 50%;
+                background: none repeat scroll 0% 0% rgb(255, 255, 255);
+                height: 320px;
+                margin-top: -180px;
+            }
+
+                #fvmask .main_panel .hr {
+                    background-color: #c8c8c8;
+                    height: 3px;
+                }
+
+                #fvmask .main_panel .img_wrapper {
+                    top: 80px;
+                }
+
+                #fvmask .main_panel .t2_input {
+                    top: 185px;
+                }
+
+                #fvmask .main_panel img {
+                    float: none;
+                    margin: 0px;
+                    vertical-align: baseline;
+                }
+
+                #fvmask .main_panel .recode_tip {
+                    padding: 10px;
+                }
+                /*
+        #fvmask .main_panel .close{
+            position:absolute;right:10px;top:10px;width:20px;height:20px;cursor:pointer;
+        }
+        */
+                #fvmask .main_panel .mid {
+                    position: absolute;
+                    width: 200px;
+                    left: 160px;
+                    display: block;
+                }
+
+                    #fvmask .main_panel .mid input, #fvmask .main_panel .mid img {
+                        display: block;
+                        width: 100%;
+                    }
+
+                    #fvmask .main_panel .mid img {
+                        height: 85px;
+                    }
+
+                #fvmask .main_panel #ticket2 {
+                    font-size: 12px;
+                    padding-left: 2px;
+                    padding-right: 2px;
+                    top: 60px;
+                    width: 192px;
+                }
+
+                    #fvmask .main_panel #ticket2::-webkit-input-placeholder, #fvmask .main_panel #ticket2:-moz-placeholder, #fvmask .main_panel #ticket2:placeholder {
+                        color: #d8d8d8;
+                    }
+
+                #fvmask .main_panel .img_reload {
+                    cursor: pointer;
+                    text-decoration: underline;
+                    width: 45px;
+                    height: 30px;
+                    font-size: 14px;
+                    top: 100px;
+                    left: 370px;
+                    position: absolute;
+                    color: #9f9f9f;
+                }
+                /*
+        #fvmask .main_panel .placeholder{
+            color: #d8d8d8;
+            top: 10px;
+            position: absolute;
+            left:10px;
+            font-size:12px;
+            width: 210px;
+        }
+        */
+                #fvmask .main_panel .smt_wrapper {
+                    font-size: 20px;
+                    font-weight: bold;
+                    height: 36px;
+                    top: 270px;
+                }
+
+                    #fvmask .main_panel .smt_wrapper input {
+                        color: #9b9b9b;
+                    }
+        /*From base.css -- consider importing it*/
+        .modal-header {
+            border-bottom: 1px solid #DDDDDD;
+            height: 38px;
+            margin: 0 30px;
+            padding-top: 2px;
+            position: relative;
+        }
+
+            .modal-header .close {
+                background-color: #8C8C8C;
+                cursor: pointer;
+                display: block;
+                height: 40px;
+                line-height: 40px;
+                position: absolute;
+                right: -40px;
+                text-align: center;
+                top: -10px;
+                width: 40px;
+            }
+
+            .modal-header h3 {
+                color: #333333;
+                font-size: 18px;
+                line-height: 38px;
+                margin: 0;
+            }
+
+            .modal-header .close {
+                background: url(https://land.xiaomi.net/res/fc4605c/image/img/passport/close.png) no-repeat;
+            }
+
+        .fail .empty_tip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="logo">
+            <a href="/">
+                <img width="70"  src="~/Themes/DefaultTheme/Content/Images/logo.jpg" alt="瑞翠华光logo" />
+            </a>
+        </div>
+    </div>
+    <div class="suc_content reg-account nojsp">
+        <div class="suc_kuang">
+            <div class="hei_513">
+                <h4 class="h4_suc textM">注册帐户</h4>
+                <p class="suc_p"></p>
+                <div class="radio_quyu">
+                    @*<input type="radio" name="registerMethod" class="Mradio" id="tab2" clickfor="#regByPhone" checked="checked" />
+                        <label for="tab2" hidefocus="true">用手机号码注册</label>
+                        <input type="radio" name="registerMethod" class="Mradio marl_40" id="tab1" clickfor="#regByEmail" />
+                        <label for="tab1" hidefocus="true">用电子邮箱注册</label>*@
+                </div>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="page registration-page">
+
+                        <div class="page-body">
+                            <div class="message-error">
+                                @Html.ValidationSummary(true)
+                            </div>
+                            @Html.Partial("_ExternalAuthentication.AssociateMessage")
+                            <dl class="login-dl clearfix">
+                                <dt class="dt_l">昵称：</dt>
+                                <dd class="dd_r clearfix">
+                                    @Html.TextBoxFor(model => model.Username, new { @class = "input_kuang val_m item errortip address ", placeholder = "昵称" })
+                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "errormessage " })
+                                </dd>
+                                <dt class="dt_l">邮箱：</dt>
+                                <dd class="dd_r clearfix">
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "input_kuang val_m item errortip address ",placeholder = "邮箱" })
+                                    @Html.ValidationMessageFor(model => model.Email ,"", new { @class = "errormessage "})
+                                </dd>
+                                <dt class="dt_l">设置密码：</dt>
+                                <dd class="dd_r dd_r_pos clearfix" id="pwdTd">
+                                    @Html.PasswordFor(model => model.Password, new { @class = "input_kuang val_m item errortip address ", placeholder = "密码" })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "errormessage" })
+                                </dd>
+                                <dt class="dt_l">确认密码：</dt>
+                                <dd class="dd_r clearfix">
+                                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "input_kuang val_m item errortip address ", placeholder = "确认密码" })
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "errormessage "})
+                                </dd>
+
+                                <dt class="dt_l" style="margin-top:10px;">验证码：</dt>
+                                <dd class="dd_r clearfix" style="margin-top:10px;">
+                                    <input type="text" class="input_kuang val_m item errortip checkcode" name="_mvcCaptchaText" id="_mvcCaptchaText"  placeholder="验证码" />
+                                    <div style="margin-top:10px">
+                                        @Html.MvcCaptcha()
+                                    </div>
+                                    <span >
+                                        点击图片刷新验证码
+                                        <br />
+                                        <i class="code_error">
+                                            @if (@ViewData.ModelState["_mvcCaptchaText"] != null)
+                                            {
+                                                @ViewData.ModelState["_mvcCaptchaText"].Errors[0].ErrorMessage
+
+                                            }
+                                        </i>
+                                    </span>
+                                </dd>
+
+
+
+                                @if (Model.AcceptPrivacyPolicyEnabled)
+                                {
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            $('#register-button').click(function () {
+                                                if ($('#accept-privacy-policy').is(':checked')) {
+                                                    //do some stuff
+                                                    return true;
+                                                }
+                                                else {
+                                                    //just show validation errors, dont post
+                                                    alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(T("Account.Fields.AcceptPrivacyPolicy.Required").Text))');
+                                                    return false;
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                    <div class="accept-privacy-policy">
+                                        <input id="accept-privacy-policy" type="checkbox" name="accept-privacy-policy" />
+                                        <label for="accept-privacy-policy">@T("Account.Fields.AcceptPrivacyPolicy")</label>
+                                        <a class="read" href='@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("privacyinfo") })'>@T("Account.Fields.AcceptPrivacyPolicy.Read")</a>
+                                    </div>
+                                }
+                                <dt class="dt_l">&nbsp;</dt>
+                                <dd class="dd_r la_height clearfix">
+                                    <div class="sub_login flt_l"><input type="submit" name="register-button" class="no_bg" value="立即注册" /></div>
+                                </dd>
+                            </dl>
+                            <form method="post" action='/pass/register' id="regByPhone">
+                                <!--用来对付IE11不支持autocomplete="off"-->
+                                <div style="display: none;">
+                                    <input type="text"><input type="password">
+                                </div>
+
+                                <input type="hidden" name="passToken" id="passToken" value="" />
+                                <input type="hidden" name="passport_ph" id="passport_ph" value="" />
+                                <input type="hidden" name="qs" value="" />
+                                <dl class="login-dl clearfix" style="display:none;">
+                                    <dt class="dt_l">手机号码：</dt>
+                                    <dd class="dd_r clearfix" id="phoneInner" style="height:auto;">
+                                        <input type="text" class="input_kuang" name="phone" rule="(^1[3|4|5|8]\d{9}$)|(^\++\d{2,}$)" value="" isrequired="true" id="phoneNum" autocomplete="off" />
+                                        <input class="mt_login val_m getCode noSend" disabled="disabled" id="sendRegister" type="button" value="获取验证码" />
+                                        <span class="check_tips error_tip" id="phoneCode">手机号码格式错误</span>
+                                        <span class="check_tips empty_tip">请输入手机号码</span>
+                                        <span class="check_tips succ_tips"></span>
+                                        <span class="check_tips fbdn_tip">您的操作频率过快，请稍后再试。</span>
+                                        <span class="check_tips custom_tip"></span>
+                                        <div class="prevnum_info">非中国大陆用户输入手机号码时请增加区域前缀，如：台湾：+8869*******，香港：+8526*******</div>
+                                    </dd>
+                                    <dt class="dt_l">验证码：</dt>
+                                    <dd class="dd_r clearfix" id="validate_td">
+                                        <input type="text" class="input_kuang code-area errortip item val_m" name="ticket" id="ticket" isrequired="true" autocomplete="off" />
+                                        <span class="validate_info" id="ticket_phone">请输入手机收到的验证码。如果一段时间没有收到，请重新获取</span>
+                                        <span class="check_tips error_tip">验证码错误</span>
+                                        <span class="check_tips empty_tip">请输入验证码</span>
+                                        <span class="check_tips succ_tips"></span>
+                                    </dd>
+                                    <dt class="dt_l">设置密码：</dt>
+                                    <dd class="dd_r clearfix dd_r_pos" id="pwdTd2">
+                                        <input type="password" class="input_kuang item val_m errortip password" isrequired="true" id="phone_pwd" name="password" autocomplete="off" />
+                                        <span class="check_tips empty_tip">请输入新密码</span>
+                                        <span class="check_tips error_tip" id="tips_val_phone"></span>
+                                        <span class="prompt_info" id="pos_phone">密码长度8~16位，数字、字母、字符至少包含两种</span>
+                                        <span class="prompt_info" id="pos_phone2" style="display:none;">密码长度8~16位，数字、字母、字符至少包含两种</span>
+                                        <span class="check_tips succ_tips"></span>
+                                        <span class="tips_1">密码长度为8~16位</span>
+                                        <span class="tips_2">密码不能全为字母</span>
+                                        <span class="tips_3">密码不能全为数字</span>
+                                        <span class="tips_6" style="display:none;">密码长度8~16位，数字、字母、字符至少包含两种</span>
+                                        <span class="tips_7" style="display:none;">密码不能全为字符</span>
+                                    </dd>
+                                    <dt class="dt_l">确认密码：</dt>
+                                    <dd class="dd_r clearfix" style="position:relative;">
+                                        <input type="password" class="input_kuang val_m item errortip" name="repassword" isrequired="true" repeat="#phone_pwd" autocomplete="off" />
+                                        <span class="check_tips repeat_tip">密码输入不一致</span>
+                                        <span class="check_tips empty_tip">请输入确认密码</span>
+                                        <span class="check_tips succ_tips"></span>
+                                        <span onclick="$('#security_tips').toggle();" title="点击查看帐号安全指示" class="prevnum_info check_tips" style="width: auto; display: inline; position: absolute; cursor: pointer; left: 247px;top:0;/*background-image: url(/pass/static/img/passport/num_info2.png);*/" id="open_security_tips"></span>
+                                        <div style="padding:20px;margin-left:320px;margin-top:-210px;display:none;z-index:100;position:absolute;background:rgb(236,236,236);border:1px solid #d9d9d9;width:600px;" id="security_tips">
+                                            <div style="position:absolute;right:10px;top:10px;cursor:pointer;" onclick="$('#security_tips').hide();">关闭</div>
+                                            <h1 style="font-size:24px;">帐号安全提示</h1>
+                                            <p><b style="font-weight:bold;">安全的密码设置原则：</b></p>
+                                            <ol style="list-style-type:decimal;list-style-position:inside;">
+                                                <li>不要使用过于简单的密码，包括简单的纯数字或者简单常见的单词字母。</li>
+                                                <li>不要使用和自己相关直接信息作为密码，包括个人的生日，姓名的字母等容易被他人猜测到的信息。</li>
+                                                <li>建议使用数字，字母，字符组合的密码，这样的密码极难被破解。</li>
+                                                <li>建议对于每个重要的网站使用不同的密码，避免所有重要帐户被破解。</li>
+                                                <li>建议对于每个重要的网站使用不同的密码，避免所有重要帐户被破解。</li>
+                                            </ol>
+                                            <hr />
+                                            <p><b style="font-weight:bold;">安全的使用环境：</b></p>
+                                            <ol style="list-style-type:decimal;list-style-position:inside;">
+                                                <li>尽量不要使用公共电脑输入您的帐号和密码。</li>
+                                                <li>定期更新您个人电脑的操作系统和浏览器。</li>
+                                                <li>在您的个人电脑上安装您信任的杀毒软件，并保持定期扫描和杀毒软件的更新。</li>
+                                                <li>不要在非瑞翠的网站输入瑞翠帐号的用户名和密码。</li>
+                                                <li>不要点击不确定来源的链接地址，避免电脑中病毒或者进入钓鱼网站。</li>
+                                            </ol>
+                                            <hr />
+                                            <p><b style="font-weight:bold;">帐号安全提示</b></p>
+                                            <ol style="list-style-type:decimal;list-style-position:inside;">
+                                                <li>确认你的账户绑定的手机号码可用，我们可以在关键的时候通过手机验证码来保护帐号的安全， 并及时通知您的帐号的状态。</li>
+                                                <li>及时更新安全手机，邮箱。确保手机，邮箱是正常使用的。</li>
+                                                <li>建议在帐号中打开安全令牌的绑定，登录时候输入安全令牌的动态码。</li>
+                                            </ol>
+                                        </div>
+                                    </dd>
+                                    <dt class="dt_l">&nbsp;</dt>
+                                    <dd class="dd_r clearfix la_height">
+                                        <div class="sub_login flt_l"><input type="submit" class="no_bg" value="立即注册" /></div>
+                                    </dd>
+                                </dl>
+                            </form><!-- phone end -->
+                            <p class="p_cor_hui">点击“立即注册”，即表示您同意并愿意遵守瑞翠华光<a href="javascipt:void(0)" class="cor_yellow">用户协议</a>和<a href="#" class="cor_yellow">隐私政策</a></p>
+                        </div>
+                        <div class="suc_botm"></div><!--这部分是卷角效果-->
+                    </div>
+                }
+            </div>
+
+            @*<script>
+                            ; (function () {
+                                var pt = document.getElementById("passToken");
+                                var pt_ph = document.getElementById("passport_ph");
+                                var c = document.cookie.split(";");
+                                ptValue = "";
+                                phValue = "";
+                                for (var i = 0 ; i < c.length ; i++) {
+                                    if (c[i].indexOf("passToken") > -1) {
+                                        ptValue = c[i].substring(c[i].indexOf("=") + 1);
+                                    }
+                                    if (c[i].indexOf("passport_ph") > -1) {
+                                        phValue = c[i].substring(c[i].indexOf("=") + 1);
+                                    }
+                                }
+                                pt.value = ptValue;
+                                pt_ph.value = phValue;
+                            })();
+                </script>
+
+                <script>
+                            ; (function () {
+                                $("#fvmaskForm").validate(true);
+                                //这个是执行from.js部分
+                                $("#regByEmail").bind("submit", function () {
+                                    $("#pos_email").hide();
+                                });
+
+                                $("#regByPhone").bind("submit", function () {
+                                    $("#ticket_phone").hide();
+                                    $("#pos_phone").hide();
+                                });
+                                $("#regByEmail").validate(true);
+                                $("#regByEmail").setConfig("emptyClass", "emptyForm");
+
+                                $("#regByPhone").validate(true);
+                                $("#regByPhone").setConfig("emptyClass", "emptyForm");
+                                $('#regByPhone').setConfig("customVaild", function () {
+                                    if ($.trim($("#phoneNum").val()).indexOf("+86") > -1) {
+                                        var thisValue = $.trim($("#phoneNum").val());
+                                        $("#phoneNum").val(thisValue.replace("+86", ""));
+                                    }
+                                    return true;
+                                });
+
+                                //这个是选择表单部分
+                                $(".Mradio").bind("click", function () {
+                                    var clickFor = $(this).attr("clickFor");
+                                    $(".login-dl").hide();
+                                    $(clickFor + " dl").show();
+                                });
+
+                                $("#tab2").click();
+
+                                /*
+                                tips_1 密码长度为8~16位
+                                tips_2密码不能全为字母
+                                tips_3密码不能全为数字
+                                tips_4密码不能与邮箱相同
+                                tips_5不能与原密码相同(修改和重置密码时)
+                                tips_6密码长度8~16位，数字、字母、字符至少包含两种(包含非ascii码时提示错误)
+                                tips_7密码不能全为字符
+                                */
+                                //这个是密码验证部分
+                                $('#pwd').bind("focus", function () {
+                                    $('#pos_email2').show();
+                                    $('#pos_email').hide();
+                                    setMyClass($(this), '');
+                                }).bind("blur", function () {
+                                    $('#pos_email2').hide();
+                                    var val = $(this).val();
+                                    if (val == '') {
+                                        setMyClass($(this), 'empty');
+                                        return false;
+                                    }
+                                    if (val.length < 8 || val.length > 16) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val").html($(".tips_1").html());
+                                    } else if (/[^\x00-\x7f]/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val").html($(".tips_6").html());
+                                    } else if (/^\d+$/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val").html($(".tips_3").html());
+                                    } else if (/^[A-Za-z]+$/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val").html($(".tips_2").html());
+                                    } else if (/^[^A-Za-z0-9]+$/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val").html($(".tips_7").html());
+                                    } else {
+                                        setMyClass($(this), 'succ');
+                                    }
+                                });
+
+                                $('#phone_pwd').bind("focus", function () {
+                                    $('#pos_phone2').show();
+                                    $('#pos_phone').hide();
+                                    setMyClass($(this), '');
+                                }).bind("blur", function () {
+                                    $('#pos_phone2').hide();
+                                    var val = $(this).val();
+                                    if (val == '') {
+                                        setMyClass($(this), 'empty');
+                                        return false;
+                                    }
+                                    if (val.length < 8 || val.length > 16) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val_phone").html($(".tips_1").html());
+                                    } else if (/[^\x00-\x7f]/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val_phone").html($(".tips_6").html());
+                                    } else if (/^\d+$/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val_phone").html($(".tips_3").html());
+                                    } else if (/^[A-Za-z]+$/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val_phone").html($(".tips_2").html());
+                                    } else if (/^[^A-Za-z0-9]+$/.test(val)) {
+                                        setMyClass($(this), 'error');
+                                        $("#tips_val_phone").html($(".tips_7").html());
+                                    } else {
+                                        setMyClass($(this), 'succ');
+                                    }
+                                });
+
+                                function checkBind(type, address, cb) {
+                                    $.ajax({
+                                        url: '/pass/user@externalIdBinded',
+                                        dataType: 'text',
+                                        type: 'GET',
+                                        data: {
+                                            externalId: address,
+                                            type: type
+                                        },
+                                        success: function (data) {
+                                            //cb(eval("(" + data.substring(data.indexOf("{")<0?data.indexOf("["):data.indexOf("{")) + ")"));
+                                            //avoid using eval
+                                            cb($.parseJSON(data.replace('&&&START&&&', '')));
+                                        }
+                                    });
+                                }
+                                function getValue(obj) {
+                                    var objValue = $.trim(obj.val());
+                                    return objValue.replace(/^\+86/, "");
+                                }
+                                var tag = { PH: 0, EM: 0 }
+                                $(".address").bind("afterValidate", function () {
+                                    var me = $(this);
+                                    var id = $(this).attr("id");
+                                    var type = id == "emailInp" ? 'EM' : 'PH';
+                                    var checkVal = getValue(me);
+                                    var stamp = new Date().getTime();
+                                    tag[type] = stamp;
+                                    checkBind(type, checkVal, function (data) {
+                                        if (stamp == tag[type]) {
+                                            if (data.code == 0) {
+                                                if (data.data.userId > 0) {
+                                                    if (type == 'PH') {
+                                                        var phoneCodeObj = $("#phoneCode");
+                                                        phoneCodeObj.html("<b>号码已被注册，请更换号码，或<a href='/pass/forgetPassword' class='cor_yellow'>取回密码</a></b>")
+                                                        $("#phoneInner").removeClass("succ").removeClass("empty").addClass("newerror");
+                                                        $("#sendRegister").addClass("noSend");
+                                                    } else {
+                                                        var emailCodeObj = $("#emailCode");
+                                                        emailCodeObj.html("<b>邮箱已被注册，请更换邮箱，或<a href='/pass/forgetPassword' class='cor_yellow'>取回密码</a></b>");
+                                                        $("#emailInner").removeClass("succ").removeClass("empty").addClass("newerror");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }).bind("focus", function () {
+                                    if ($("#phoneCode")) {
+                                        $("#phoneInner").removeClass("newerror");
+                                        $("#phoneCode").html("手机号码格式错误");
+                                    }
+                                    if ($("#emailCode")) {
+                                        $("#emailInner").removeClass("newerror");
+                                        $("#emailCode").html("邮箱地址格式错误");
+                                    }
+                                });
+                                /*
+                                $("#phoneNum").bind("blur",function(){
+                                  var addParent = $(this).parent();
+                                  if( addParent.hasClass("empty") || addParent.hasClass("error") ){
+                                    $("#sendRegister").addClass("noSend");
+                                  }
+                                }).bind("focus",function(){
+                                   $(this).parent().removeClass("newerror");
+                                   if( !$("#sendRegister").hasClass("en-width") ){
+                                     $("#sendRegister").removeClass("noSend");
+                                   }
+                                });
+                                */
+                                //var dontSend = false;
+                                $('#phoneNum').bind('propertychange input', function (e) {
+                                    var $this = $(this);
+                                    var $sendRegister = $('#sendRegister');
+                                    if (!$sendRegister.hasClass('en-width')) {
+                                        if ($this.val()) {
+                                            $sendRegister.removeClass('noSend').removeAttr('disabled');
+                                        } else {
+                                            $sendRegister.addClass('noSend').attr('disabled', 'disabled');
+                                        }
+                                    }
+                                });
+                                $("#sendRegister").bind('click', function () {
+                                    var me = $(this);
+                                    if (me.hasClass("noSend")) {
+                                        return false;
+                                    }
+                                    var myAttr = me.attr('disabled');
+                                    if (!!myAttr) { return false };
+                                    var phoneValue = getValue($("#phoneNum"));
+                                    $('#phoneInner .check_tips').hide();
+                                    var xhr = $.ajax({
+                                        url: "/pass/sendPhoneTicket",
+                                        dataType: 'text',
+                                        type: 'POST',
+                                        data: {
+                                            phone: phoneValue
+                                        },
+                                        statusCode: {
+                                            '403': function () {
+                                                $('#phoneInner .fbdn_tip').show();
+                                            }
+                                        },
+                                        success: function (data) {
+                                            //data = eval("(" + data.substring(data.indexOf("{")<0?data.indexOf("["):data.indexOf("{")) + ")");
+                                            data = $.parseJSON(data.replace('&&&START&&&', ''));
+                                            if (data.code == 0) {
+                                                me.attr("disabled", "true");
+                                                me.addClass("noSend");
+                                                me.time = 60;
+                                                ; (function () {
+                                                    if (me.time > 1) {
+                                                        me.time--;
+                                                        me.addClass("en-width").val("再次获取(" + me.time + ")");
+                                                        setTimeout(arguments.callee, 1000);
+                                                    } else {
+                                                        me.removeClass("en-width").val("获取验证码");
+                                                        if ($('#phoneNum').val()) {
+                                                            me.removeClass("noSend");
+                                                            me.removeAttr("disabled");
+                                                        }
+                                                    }
+                                                })();
+                                                /*禁用发送60秒 这种情况改写后不会再出现了，先不删除*/
+                                            } else if (data.code == "25001") {
+                                                $('#phoneInner .check_tips').removeAttr('style');
+                                                me.attr("disabled", "true");
+                                                me.time = 5;/*禁用5秒*/
+                                                ; (function () {
+                                                    if (me.time > 1) {
+                                                        me.time--;
+                                                        //me.val("再次获取("+me.time+")");
+                                                        setTimeout(arguments.callee, 1000);
+                                                    } else {
+                                                        me.val("获取验证码");
+                                                        me.removeAttr("disabled");
+                                                    }
+                                                })();
+                                                $("#phoneCode").html("号码已被注册，请更换号码，或<a href='/pass/forgetPassword' class='cor_yellow'>取回密码</a>");
+                                                setMyClass($("#phoneCode"), 'error');
+                                                /*需要进一步填写图片验证码，当同一IP频繁请求手机验证码时发生*/
+                                            } else if (data.code === 20031) {
+                                                $("#fvmask #img_code").attr('src', data.info + '&_=' + (+new Date));
+                                                $("#fvmask .t2_input").removeClass('fail');
+                                                $("#fvmask").show();
+                                                $(document.body).css('overflow', 'hidden');
+                                                var $tip = $('#fvmask .t2_input .check_tips');
+                                                $tip.removeAttr('style').text($tip.attr('_orig')).parent().removeClass('empty');
+                                                $('#ticket2').val('');
+                                            } else {
+                                                //custom tip
+                                                $('#phoneInner .custom_tip').text(data.description).show();
+                                            }
+                                        }
+                                    });
+                                    return false;
+                                });
+                                $('#fvmask #further_veri').click(function (e) {
+                                    $.ajax({
+                                        url: '/pass/sendPhoneTicket',
+                                        type: 'POST',
+                                        dataType: 'text',
+                                        data: {
+                                            phone: $('#phoneNum').val(),
+                                            icode: $('#ticket2').val()
+                                        },
+                                        statusCode: {
+                                            '403': function () {
+                                                $("#fvmask .t2_input .check_tips").text($('#phoneInner .fbdn_tip').text()).show();
+                                            }
+                                        },
+                                        success: function (data) {
+                                            //data = eval("(" + data.substring(data.indexOf("{")<0?data.indexOf("["):data.indexOf("{")) + ")");
+                                            //avoid using eval
+                                            data = $.parseJSON(data.replace('&&&START&&&', ''));
+                                            if (data.code === 0) {
+                                                $("#fvmask").hide();
+                                                $(document.body).css('overflow', 'scroll');
+                                                var $send = $('#sendRegister');
+                                                $send.attr("disabled", "true");
+                                                $send.addClass("noSend");
+                                                //var timeLeft = 60;
+                                                var startTime = +new Date;
+                                                (function () {
+                                                    var now = +new Date;
+                                                    var diff = now - startTime;
+                                                    timeLeft = 60 - Math.round(diff / 1000);
+                                                    if (timeLeft > 0) {
+                                                        $send.addClass("en-width").val("再次获取(" + timeLeft + ")");
+                                                        setTimeout(arguments.callee, 1000);
+                                                    } else {
+                                                        $send.removeClass("en-width").val("获取验证码");
+                                                        if ($('#phoneNum').val()) {
+                                                            $send.removeClass("noSend");
+                                                            $send.removeAttr("disabled");
+                                                        }
+                                                    }
+                                                })();
+                                            } else {
+                                                //验证不通过
+                                                //get a new captcha to avoid brute force attack
+                                                $("#fvmask #img_code").attr('src', $("#fvmask #img_code").attr('src') + '&_=' + (+new Date));
+                                                $('#ticket2').val('');
+                                                $("#fvmask .t2_input").addClass('fail');
+                                                $("#fvmask .t2_input .check_tips").text(data.description);
+                                            }
+                                        }
+                                    });
+                                });
+                                $("#ticket").bind("focus", function () {
+                                    $("#ticket_phone").show();
+                                    setMyClass($("#ticket"), '');
+                                });
+                                $("#ticket").bind("blur", function () {
+                                    $("#ticket_phone").hide();
+                                    var val_t = $(this).val();
+                                    if (val_t == "") { return false; }
+                                    var phoneValue = getValue($("#phoneNum"));
+                                    $.ajax({
+                                        url: "/pass/verifyPhoneRegTicket",
+                                        dataType: 'text',
+                                        type: 'GET',
+                                        data: {
+                                            phone: phoneValue,
+                                            ticket: val_t
+                                        },
+                                        success: function (data) {
+                                            //data = eval("(" + data.substring(data.indexOf("{")<0?data.indexOf("["):data.indexOf("{")) + ")");
+                                            //avoid using eval
+                                            data = $.parseJSON(data.replace('&&&START&&&', ''));
+                                            if (data.code > 0) {
+                                                setMyClass($("#ticket"), 'error');
+                                                return false;
+                                            } else {
+                                                setMyClass($("#ticket"), 'succ');
+                                            }
+                                        }
+                                    });
+                                });
+
+                                function setMyClass(obj, current, empty, error, repeat, succ) {
+                                    empty = empty || "empty";
+                                    error = error || "error";
+                                    repeat = repeat || "repeat";
+                                    succ = succ || "succ";
+                                    obj.parent().removeClass(empty).removeClass(error).removeClass(repeat).removeClass(succ).addClass(current);
+                                }
+
+                                var imgerror = "";
+                                if (imgerror) {
+                                    $('#imginput').parent().addClass('imgerror');
+                                }
+                                $('#imginput').bind('focus', function () {
+                                    $(this).parent().removeClass('imgerror');
+                                });
+
+                                $("#phoneNum").change(function () {
+                                    $("#ticket").val("");
+                                    $("#ticket").parent().removeClass("succ").removeClass("empty").removeClass("error");
+                                });
+                                //tips show and hide
+                                $('#security_tips, #open_security_tips').click(function (e) {
+                                    e.stopPropagation();
+                                });
+
+                                $(document.body).click(function () {
+                                    $('#security_tips').hide();
+                                });
+                                $('#phoneNum, #emailInp, #ticket').val();
+                            })();
+                </script>*@
+
+        </div>
+    </div>
+    <div class="footer" style="width:auto;">
+        <ul class="links">
+            <li class="copyright"><span>版权所有 © 2014 瑞翠商城 保留所有权利</span></li>
+        </ul>
+    </div>
+</body>
+</html>

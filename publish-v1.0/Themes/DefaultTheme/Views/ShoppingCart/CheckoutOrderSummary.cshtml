@@ -1,0 +1,145 @@
+﻿@model ShoppingCartModel
+@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.ShoppingCart;
+@{
+    var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+}
+<div id="shopCartBox">
+    <div class="shop-cart-box">
+        @Html.Widget("order_summary_content_before")
+        @if (Model.Items.Count > 0)
+        {
+            if (Model.Warnings.Count > 0)
+            {
+                <div class="message-error">
+                    <ul>
+                        @for (int i = 0; i < Model.Warnings.Count; i++)
+                        {
+                            <li>@Model.Warnings[i]</li>
+                        }
+                    </ul>
+                </div>
+            }
+            using (Html.BeginRouteForm("ShoppingCart", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="submit" id="updatecartSubmit" name="updatecart" value="@T("ShoppingCart.UpdateCart")" style="display:none;" />
+                <div class="shop-cart-box-bd">
+                    <!--  购物车商品列表 -->
+                    <dl class="shop-cart-goods">
+                        <dt class="clearfix">
+                            <span class="col col-1">商品</span>
+                            <span class="col col-2">单价</span>
+                            <span class="col col-3">数量</span>
+                            <span class="col col-4">小计</span>
+                        </dt>
+
+                        @foreach (var item in Model.Items)
+                        {
+                            <dd class="item  clearfix J_proItem" data-cos="0">
+                                <input type="checkbox" id="removeCheckbox@(item.Id)" name="removefromcart" value="@(item.Id)" style="display:none;" />
+                                <div class="item-row">
+                                    <div class="col col-1">
+                                        <div class="g-pic">
+                                            <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" target="_blank">
+                                                <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" srcset="@item.Picture.ImageUrl" title="@item.Picture.Title" width="120" height="120" />
+                                            </a>
+
+                                        </div>
+                                        <div class="g-info">
+                                            <div class="g-name">
+
+                                                <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" target="_blank">
+                                                    @item.ProductName
+                                                </a>
+                                            </div>
+                                            <p class="g-type">
+                                                @if (!String.IsNullOrEmpty(item.AttributeInfo))
+                                                {
+                                                    <span>
+                                                        @Html.Raw(item.AttributeInfo)
+                                                    </span>
+                                                }
+                                                @if (!String.IsNullOrEmpty(item.RecurringInfo))
+                                                {
+                                                    <span>
+                                                        @Html.Raw(item.RecurringInfo)
+                                                    </span>
+                                                }
+                                                @if (item.Warnings.Count > 0)
+                                                {
+                                                    for (int i = 0; i < item.Warnings.Count; i++)
+                                                    {
+                                                        <span>@item.Warnings[i]</span>
+                                                    }
+                                                }
+                                            </p>
+                                            <p class='g-other-info'>
+                                                <!--【包邮】购买此商品享全单免费送货-->
+                                            </p>
+                                            <!--S 套装描述-->
+                                            <!--E 套装描述-->
+                                            <!--S 明星产品配置-->
+                                            <!--E 明星产品配置-->
+                                        </div>
+                                    </div>
+                                    <div class="col col-2">
+                                        @item.UnitPrice
+                                    </div>
+                                    <div class="col col-3">
+                                            <span>@item.Quantity</span>
+                                    </div>
+                                    <div class="col col-4">
+                                        <em>@item.SubTotal</em>
+                                        <p>
+                                            @if (!String.IsNullOrEmpty(item.Discount))
+                                            {
+                                                @item.Discount
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </dd>
+                        }
+
+                        <!--S 活动相关-->
+                        <!--E 活动相关-->
+                        @if (!String.IsNullOrEmpty(Model.CheckoutAttributeInfo))
+                        {
+                            <dd class="selected-checkout-attributes" style="display:none;">
+                                @Html.Raw(Model.CheckoutAttributeInfo)
+                            </dd>
+                        }
+                    </dl>
+
+                </div>
+    <!--  购物车商品列表  END-->
+    <!-- 购物车统计 -->
+                <div class="shop-cart-box-ft clearfix">
+                    <!--S 加价购-->
+                    <div class="xm-add-buy">
+                        <div style="display:none;">
+                            @Html.Partial("_CheckoutAttributes", Model.CheckoutAttributes, new ViewDataDictionary())
+                        </div>
+                    </div>
+                    <!--E 加价购-->
+                    <div class="shop-cart-total">
+                        @Html.Action("OrderTotals", "ShoppingCart", new { isEditable = Model.IsEditable })
+                    </div>
+                </div>
+    <!-- 购物车统计 END-->
+            }
+                <div class="checkout-confirm">
+                    @Html.Partial("_OrderReviewData", Model.OrderReviewData)
+                    <a class="btn btn-lineDakeLight btn-back-cart" href="@Url.RouteUrl("ShoppingCart")">返回购物车</a>
+                    <input id="checkoutToPay" class="btn btn-primary" type="button" onclick="ConfirmOrder.save()" value="立即下单">
+                </div>
+           
+        }
+        else
+        {
+            @T("ShoppingCart.CartIsEmpty")
+        }
+    </div>
+
+</div>

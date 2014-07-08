@@ -1,0 +1,175 @@
+﻿@model CategoryModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts("超值推荐——瑞翠华光官网");
+   
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+
+@*category breadcrumb*@
+@if (false && Model.DisplayCategoryBreadcrumb)
+{
+    <div class="breadcrumb">
+        <ul>
+            <li>
+                <a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">@breadcrumbDelimiter</span>
+            </li>
+            @foreach (var cat in Model.CategoryBreadcrumb)
+            {
+                var isLastCategory = cat.Id == Model.Id;
+                <li>
+                    @if (isLastCategory)
+                    {
+                        <strong class="current-item">@cat.Name</strong>
+                    }
+                    else
+                    {
+                        <a href="@Url.RouteUrl("TuiJianProduct", new { SeName = cat.SeName })" title="@cat.Name">@cat.Name</a>
+                        <span class="delimiter">@breadcrumbDelimiter</span>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    @Html.Widget("categorydetails_after_breadcrumb")
+}
+
+
+    @*<div class="box-hd">
+        <h3 class="title">商品筛选</h3>
+    </div>*@
+    @*<div class="box-bd">
+        <div class="filter-lists">
+            @if (Model.SubCategories.Count > 0)
+            {
+                <dl style="display:none;" class="xm-filter-list xm-filter-list-first category-filter-list clearfix">
+                    <dt>款式：</dt>
+                    <dd>
+                        <ul id="typeCat" class="clearfix">
+                            @foreach (var item in Model.SubCategories)
+                            {
+                                <li class="first "><a href="@Url.RouteUrl("TuiJianProduct", new { SeName = item.SeName })">@item.Name</a></li>
+                            }
+                        </ul>
+                    </dd>
+                </dl>
+            }
+            @{
+                ViewDataDictionary filters = new ViewDataDictionary();
+              //  filters.Add("SpecFilter", Model.PagingFilteringContext.SpecificationFilter);
+                filters.Add("PriceFilter", Model.PagingFilteringContext.PriceRangeFilter);
+                @Html.Partial("_FilterTuiJianBox", null, filters)
+            }
+        </div>
+    </div>*@
+
+<div class="product-sorting" style="display:none;">
+    @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+</div>
+<div class="box-hd">
+    <div class="tj-sort">
+        <dl class="xm-filter-list xm-filter-list-first category-filter-list clearfix">
+            <dd class="float-left">
+                <ul id="typeOrder" class="clearfix">
+                    @if (Model.PagingFilteringContext.AvailableSortOptions.Count > 0)
+                    {
+                        var first = 0;
+                        var firstCss = " first";
+                        foreach (var item in Model.PagingFilteringContext.AvailableSortOptions)
+                        {
+                            if (first++ > 0)
+                            {
+                                firstCss = "";
+                            }
+
+                            if (item.Value.Contains("orderby=0"))
+                            {
+                                <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                                    <a href="@item.Value" rel="nofollow">默认</a>
+                                </li>
+                            }
+                            @*else if (item.Value.Contains("orderby=15"))
+                        {
+                            <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                                <a href="@item.Value" rel="nofollow">最新</a>
+                            </li>
+                        }
+                        else if (item.Value.Contains("orderby=11"))
+                        {
+                            <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                                <a href="@item.Value" rel="nofollow">价格从高到低</a>
+                            </li>
+                        }
+                        else if (item.Value.Contains("orderby=10"))
+                        {
+                            <li class='@((item.Selected ? "current" : "") + firstCss)'>
+                                <a href="@item.Value" rel="nofollow">价格从低到高</a>
+                            </li>
+                        }*@
+
+                        }
+                    }
+                </ul>
+            </dd>
+
+            <dd class="float-left">
+                <div class="fPrice">
+                    @{
+                        ViewDataDictionary filters = new ViewDataDictionary();
+                        //  filters.Add("SpecFilter", Model.PagingFilteringContext.SpecificationFilter);
+                       // filters.Add("PagingFilter", Model.PagingFilteringContext);
+                        @Html.Partial("_FilterTuiJianBox", Model.PagingFilteringContext)
+                    }
+      
+                </div>
+            </dd>
+        </dl>
+
+    </div>
+    <div class="more">
+        <div class="filter-stock">
+            <!--
+            <a href=""><i class="icon-check iconfont ">&#xe626;</i>仅显示特惠商品</a>&nbsp;&nbsp;
+            <a href=""><i class="icon-check iconfont ">&#xe626;</i>仅显示有货商品</a>-->
+        </div>
+    </div>
+</div>
+<div class="xm-goods-list-wrap">
+
+    <ul class="xm-goods-list clearfix">
+        @foreach (var product in Model.Products)
+    {
+        <li class="item-box" style="width:254px;">
+            @Html.Partial("_ProductTuiJianBox", product)
+        </li>
+    }
+    </ul>
+</div>
+<div class="xm-pagenavi">
+    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+</div>
+
+<script type="text/javascript">
+    function getPriceRange()
+    {
+        alert($("#start_price").val());
+        $.cookie('tuijian_start_price', $("#start_price").val());
+        $.cookie('tuijian_end_price', $("#end_price").val());
+    }
+</script>

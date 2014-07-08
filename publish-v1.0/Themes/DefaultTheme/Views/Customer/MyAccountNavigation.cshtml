@@ -1,0 +1,129 @@
+﻿@model CustomerNavigationModel           
+@using Nop.Web.Models.Customer;
+<div class="uc-nav-box">
+    <div class="box-hd">
+        <h3 class="title">个人中心</h3>
+    </div>
+    <div class="box-bd">
+        <ul class="uc-nav-list">
+            @Html.Widget("account_navigation_before")
+            @if (!Model.HideOrders)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.Orders)
+                    {<text>current</text>}
+                    else
+                    {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                </li>
+            }
+            @if (!Model.HideReturnRequests)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.ReturnRequests)
+                                                                             {<text>current</text>}
+                                                                             else
+                                                                             {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerReturnRequests")">@T("Account.CustomerReturnRequests")</a>
+                </li>
+            }
+            @if (!Model.HideDownloadableProducts)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.DownloadableProducts)
+                                                                                   {<text>current</text>}
+                                                                                   else
+                                                                                   {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerDownloadableProducts")">@T("Account.DownloadableProducts")</a>
+                </li>
+            }
+ 
+            @if (!Model.HideRewardPoints)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.RewardPoints)
+                                                                           {<text>current</text>}
+                                                                           else
+                                                                           {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerRewardPoints")">@T("Account.RewardPoints")</a>
+                </li>
+            }
+            <li class="@if (Model.SelectedTab == CustomerNavigationEnum.WishList)
+                                                                           {<text>current</text>}
+                                                                           else
+                                                                           {<text></text>}">
+                <a href="@Url.RouteUrl("Wishlist")">收藏夹</a>
+            </li>
+                 @if (!Model.HideBackInStockSubscriptions)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.BackInStockSubscriptions)
+                                                                                   {<text>current</text>}
+                                                                                   else
+                                                                                   {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerBackInStockSubscriptions")">@T("Account.BackInStockSubscriptions")</a>
+                </li>
+            }
+            @*@if (!Model.HideChangePassword)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.ChangePassword)
+                                                                             {<text>current</text>}
+                                                                             else
+                                                                             {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerChangePassword")">@T("Account.ChangePassword")</a>
+                </li>
+            }*@
+            @if (!Model.HideForumSubscriptions)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.ForumSubscriptions)
+                                                                                 {<text>current</text>}
+                                                                                 else
+                                                                                 {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerForumSubscriptions")">@T("Account.ForumSubscriptions")</a>
+                </li>
+            }
+            @Html.Widget("account_navigation_after")
+        </ul>
+    </div>
+
+    <div class="box-hd">
+        <h3 class="title">账户管理</h3>
+    </div>
+    <div class="box-bd">
+        <ul class="uc-nav-list">
+            @Html.Widget("account_navigation_before")
+            @if (!Model.HideAddresses)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.Addresses)
+                                                                        {<text>current</text>}
+                                                                        else
+                                                                        {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerAddresses")">收货地址管理</a>
+                </li>
+            }
+            @if (!Model.HideInfo)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.Info)
+                                                                   {<text>current</text>}
+                                                                   else
+                                                                   {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerInfo")">@T("Account.CustomerInfo")</a>
+                </li>
+            }    
+            @if (!Model.HideAvatar)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.Avatar)
+                                                                     {<text>current</text>}
+                                                                     else
+                                                                     {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerAvatar")">@T("Account.Avatar")</a>
+                </li>
+            }       
+            @if (!Model.HideChangePassword)
+            {
+                <li class="@if (Model.SelectedTab == CustomerNavigationEnum.ChangePassword)
+                                                                             {<text>current</text>}
+                                                                             else
+                                                                             {<text></text>}">
+                    <a href="@Url.RouteUrl("CustomerChangePassword")">@T("Account.ChangePassword")</a>
+                </li>
+            }
+            @Html.Widget("account_navigation_after")
+        </ul>
+    </div>
+</div>

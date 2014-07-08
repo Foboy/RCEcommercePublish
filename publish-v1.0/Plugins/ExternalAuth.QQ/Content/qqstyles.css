@@ -1,0 +1,5 @@
+﻿.foo{}
+fieldset.qq-login-block{display:inline;float:left;margin:5px;}
+.qq-btn{float:left;background-image:url('images/Connect_logo_4.png');background-repeat:no-repeat;width:150px;height:23px;margin:5px;}
+.qq-btn:hover{background-position:0px -24px;}
+.qq-btn:active{background-position:0px -48px;}

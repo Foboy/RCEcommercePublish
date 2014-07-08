@@ -1,0 +1,51 @@
+﻿@model MiniShoppingCartModel
+@using Nop.Web.Models.ShoppingCart;
+<a id="J_miniCart" class="mini-cart wcolor " href="@Url.RouteUrl("ShoppingCart")"><i class="iconfont font12 wcolor">&#xf0148;</i>@T("ShoppingCart")<span class="mini-cart-num J_cartNum">@T("ShoppingCart.HeaderQuantity", Model.TotalProducts)</span></a>
+<div id="J_miniCartList" class="mini-cart-list">
+    @if (Model.TotalProducts == 0)
+    {
+        <p class="loading">@T("ShoppingCart.Mini.NoItems")</p>
+    }
+    else
+    {
+    <ul>
+        @for (int i = 0; i < Model.Items.Count; i++)
+        {
+            var item = Model.Items[i];
+            <li class="clearfix">
+                <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" title="@item.Picture.Title" class="pic">
+                    <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title">
+                </a>
+                <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" class="name">@item.ProductName</a><span class="price">@item.UnitPrice x @item.Quantity</span>
+                <a class="btn-del delItem" style="display:none;" href="javascript: void(0);"><i class="font10 hcolor iconfont">&#xf00b3;</i></a>
+            </li>
+            if (!String.IsNullOrEmpty(item.AttributeInfo))
+            {
+                <li class="clearfix">
+                    @Html.Raw(item.AttributeInfo)
+                </li>
+            }
+        }
+    </ul>
+    <div class="count clearfix"><span class="total">共计 <em>@Model.TotalProducts</em> 件商品<strong>合计：<em>@Model.SubTotal 元</em></strong></span>
+        @if (Model.DisplayShoppingCartButton)
+        {
+            <a href="@Url.RouteUrl("ShoppingCart")" class="btn btn-primary">去购物车结算</a>
+        }
+        @if (Model.DisplayCheckoutButton)
+        {
+            var checkoutUrl = "";
+            if (Model.AnonymousCheckoutAllowed && Model.CurrentCustomerIsGuest)
+            {
+                checkoutUrl = Url.RouteUrl("LoginCheckoutAsGuest", new { returnUrl = Url.RouteUrl("ShoppingCart") });
+            }
+            else
+            {
+                checkoutUrl = Url.RouteUrl("Checkout");
+            }
+            <a href="@checkoutUrl" class="btn btn-primary">去购物车结算</a>
+        }
+    
+    </div>
+    }
+</div>

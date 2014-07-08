@@ -1,0 +1,8 @@
+﻿Group: Widgets
+FriendlyName: 商品列表广告位
+SystemName: Widgets.AD
+Version: 1.0
+SupportedVersions: 3.30
+Author: foby
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.AD.dll

@@ -1,0 +1,21 @@
+﻿@model IList<ProductOverviewModel>
+
+@using Nop.Web.Models.Catalog;
+
+    <div class="box-hd"> <div class="title"> 买过的人还买了 </div> </div>
+    <div class="box-bd">
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a href="@Url.RouteUrl("Product", new { SeName = item.SeName })" target="_blank">
+                        <h2>@item.Name</h2>
+                        <h2>@item.ProductPrice.Price</h2>
+                        <div class="star"> <span class="icon-stat @Html.ScoreToStar(item.Score)"></span> </div>
+                        <img class="leftImg" alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" srcset="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </div>
